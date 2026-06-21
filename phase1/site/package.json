@@ -1,9 +1,8 @@
 {
-  "name": "subradar-site",
-  "version": "1.0.0",
-  "description": "订阅雷达 SubRadar — AI订阅侦探 静态站点",
+  "name": "subradar-toolkit",
+  "version": "2.0.0",
+  "description": "订阅雷达 — 查教程·算账单·管到期 三合一订阅管理工具包",
   "scripts": {
-    "build": "node build.js",
     "dev": "npx serve ."
   }
 }
