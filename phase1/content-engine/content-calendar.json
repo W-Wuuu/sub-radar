@@ -1,0 +1,106 @@
+{
+  "phase": "Phase 1 - 14天内容日历",
+  "start_date": "2026-06-22",
+  "end_date": "2026-07-05",
+  "total_target": "≥15篇发布内容",
+  "daily_schedule": [
+    {
+      "day": 1, "date": "2026-06-22",
+      "theme": "痛点唤醒",
+      "xiaohongshu": "你被偷偷扣了多少钱？一个简单的检查方法",
+      "zhihu": "为什么中国的自动续费越来越难取消了？——从消保法实施条例说起",
+      "wechat_mp": null
+    },
+    {
+      "day": 2, "date": "2026-06-23",
+      "theme": "教程工具",
+      "xiaohongshu": "微信自动续费关闭教程（截图版），30秒搞定",
+      "zhihu": null,
+      "wechat_mp": null
+    },
+    {
+      "day": 3, "date": "2026-06-24",
+      "theme": "数据冲击",
+      "xiaohongshu": "我翻了12个月支付记录，发现了3000块的'隐形订阅'",
+      "zhihu": "普通中国年轻人一年在订阅上花多少钱？我们来算一笔账",
+      "wechat_mp": null
+    },
+    {
+      "day": 4, "date": "2026-06-25",
+      "theme": "教程工具",
+      "xiaohongshu": "支付宝自动扣款管理完整指南",
+      "zhihu": null,
+      "wechat_mp": null
+    },
+    {
+      "day": 5, "date": "2026-06-26",
+      "theme": "对比评测",
+      "xiaohongshu": "视频会员怎么选最省钱？腾讯/爱奇艺/优酷/B站全面对比",
+      "zhihu": "2026年中国主流视频平台订阅价值深度对比",
+      "wechat_mp": null
+    },
+    {
+      "day": 6, "date": "2026-06-27",
+      "theme": "故事共鸣",
+      "xiaohongshu": "卸载App≠取消订阅！我的血泪教训",
+      "zhihu": null,
+      "wechat_mp": "第一篇：你的手机里藏着多少'隐形订阅'？——一个99%的人都没算过的账"
+    },
+    {
+      "day": 7, "date": "2026-06-28",
+      "theme": "计算器推广",
+      "xiaohongshu": "【工具推荐】输入你的订阅，AI告诉你一年浪费了多少钱",
+      "zhihu": "我开发了一个免费工具：输入订阅清单，自动计算年度支出和潜在浪费",
+      "wechat_mp": null
+    },
+    {
+      "day": 8, "date": "2026-06-29",
+      "theme": "教程工具",
+      "xiaohongshu": "iCloud/百度网盘/夸克网盘...到底留哪个？",
+      "zhihu": null,
+      "wechat_mp": null
+    },
+    {
+      "day": 9, "date": "2026-06-30",
+      "theme": "痛点深化",
+      "xiaohongshu": "健身房年卡、知识付费、网盘会员...你中了几个？",
+      "zhihu": "订阅疲劳（Subscription Fatigue）在中国：一个被忽视的消费者困境",
+      "wechat_mp": null
+    },
+    {
+      "day": 10, "date": "2026-07-01",
+      "theme": "教程工具",
+      "xiaohongshu": "iOS用户必看：如何查看和管理所有App订阅",
+      "zhihu": null,
+      "wechat_mp": "第二篇：微信、支付宝、银行卡——三端统一管理你的订阅（附详细教程）"
+    },
+    {
+      "day": 11, "date": "2026-07-02",
+      "theme": "数据冲击",
+      "xiaohongshu": "调研了100个人，80%不知道自己在订阅上花了多少钱",
+      "zhihu": null,
+      "wechat_mp": null
+    },
+    {
+      "day": 12, "date": "2026-07-03",
+      "theme": "政策解读",
+      "xiaohongshu": "好消息！自动续费新规：平台必须提前5天提醒你",
+      "zhihu": "2024-2025年自动续费监管政策全梳理：消费者权益保护的里程碑",
+      "wechat_mp": null
+    },
+    {
+      "day": 13, "date": "2026-07-04",
+      "theme": "对比评测",
+      "xiaohongshu": "音乐App订阅对比：QQ音乐/网易云/Spotify/Apple Music",
+      "zhihu": null,
+      "wechat_mp": null
+    },
+    {
+      "day": 14, "date": "2026-07-05",
+      "theme": "总结+CTA",
+      "xiaohongshu": "用了订阅计算器后，我每年省了2000块（附完整省钱方案）",
+      "zhihu": "两周订阅审计挑战：我用一个免费工具找到了每年2000+的浪费",
+      "wechat_mp": "第三篇：21天订阅管理挑战——大多数人第一周就省了500+"
+    }
+  ]
+}

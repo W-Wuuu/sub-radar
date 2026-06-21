@@ -1,0 +1,9 @@
+{
+  "name": "subradar-site",
+  "version": "1.0.0",
+  "description": "订阅雷达 SubRadar — AI订阅侦探 静态站点",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "npx serve ."
+  }
+}

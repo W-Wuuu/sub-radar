@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "project": "订阅雷达 SubRadar - Phase 1 Content Engine",
+  "created": "2026-06-21",
+  "channels": {
+    "xiaohongshu": {
+      "name": "小红书",
+      "content_types": ["图文笔记", "短视频脚本"],
+      "optimal_length": "300-800字",
+      "tone": "亲切、有共鸣、轻量化",
+      "hashtag_strategy": "3-5个精准标签 + 1个热门标签",
+      "best_posting_time": "12:00-14:00, 18:00-22:00",
+      "frequency": "每日1-2篇"
+    },
+    "zhihu": {
+      "name": "知乎",
+      "content_types": ["问答", "文章", "想法"],
+      "optimal_length": "800-2500字",
+      "tone": "理性、数据驱动、专业可信",
+      "hashtag_strategy": "精准话题标签，2-3个",
+      "best_posting_time": "10:00-12:00, 20:00-23:00",
+      "frequency": "每周2-3篇"
+    },
+    "wechat_mp": {
+      "name": "公众号",
+      "content_types": ["图文推送", "合集"],
+      "optimal_length": "1000-3000字",
+      "tone": "深度、有用、可收藏",
+      "hashtag_strategy": "无（公众号无标签系统）",
+      "best_posting_time": "08:00-09:00, 21:00-22:00",
+      "frequency": "每周1-2篇"
+    }
+  },
+  "content_pillars": [
+    {
+      "id": "shock",
+      "name": "震惊体 — 唤醒痛点",
+      "description": "揭示订阅浪费的真实数据，制造认知冲击",
+      "template": "你每年在[订阅类别]上浪费了[金额]——[具体案例+视觉冲击]"
+    },
+    {
+      "id": "tutorial",
+      "name": "教程体 — 实用价值",
+      "description": "手把手教用户如何发现/管理/取消订阅",
+      "template": "[N步]搞定[平台]的自动续费：[具体操作截图/录屏]"
+    },
+    {
+      "id": "story",
+      "name": "故事体 — 情感共鸣",
+      "description": "真实（或改编）的订阅浪费故事，引发"我也一样"",
+      "template": "我翻了[时间段]的支付记录，发现[惊人事实]——[反思+解决方案]"
+    },
+    {
+      "id": "data",
+      "name": "数据体 — 建立权威",
+      "description": "统计、调查、对比数据，建立专业形象",
+      "template": "[数据点]显示：[N]%的人不知道自己在[订阅类别]上花了多少钱"
+    },
+    {
+      "id": "comparison",
+      "name": "对比体 — 决策辅助",
+      "description": "同类订阅服务的横向对比，帮用户省钱",
+      "template": "[A] vs [B] vs [C]：[类别]订阅怎么选最划算？"
+    }
+  ],
+  "ai_prompts": {
+    "content_brief": "你是一个面向中国消费者的个人理财内容创作者。基于以下主题，生成一篇{channel}风格的内容大纲。主题：{topic}。要求：包含标题建议、核心观点（3-5个）、适合的hook开头、结尾CTA。",
+    "expand_draft": "基于以下大纲，撰写一篇完整的{channel}内容。要求：{tone_requirements}。字数：{word_count}。必须包含具体数字、可操作建议、以及一个让读者想评论的结尾问题。",
+    "platform_adapt": "将以下内容适配为{target_channel}的风格。保持核心信息不变，调整：语气、长度、格式、互动方式。原文：{source_content}"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "generated": "2026-06-21",
+  "total_pieces": 17,
+  "xiaohongshu": [
+    {"id": "xhs-01", "file": "xhs-01-auto-renewal-check.md", "title": "你被偷偷扣了多少钱？30秒自查教程", "pillar": "shock", "day": 1},
+    {"id": "xhs-02", "file": "xhs-02-wechat-cancel-tutorial.md", "title": "微信自动续费关闭教程（截图版）", "pillar": "tutorial", "day": 2},
+    {"id": "xhs-03", "file": "xhs-03-3000-hidden-subs.md", "title": "我翻了12个月支付记录，发现3000块隐形订阅", "pillar": "story", "day": 3},
+    {"id": "xhs-04", "file": "xhs-04-alipay-cancel-tutorial.md", "title": "支付宝自动扣款管理完整指南", "pillar": "tutorial", "day": 4},
+    {"id": "xhs-05", "file": "xhs-05-video-comparison.md", "title": "视频会员怎么选最省钱？四大平台全面对比", "pillar": "comparison", "day": 5},
+    {"id": "xhs-06", "file": "xhs-06-calculator-tool.md", "title": "免费工具推荐：订阅计算器", "pillar": "shock", "day": 7},
+    {"id": "xhs-07", "file": "xhs-07-cloud-storage-comparison.md", "title": "iCloud/百度网盘/夸克…到底留哪个？", "pillar": "comparison", "day": 8},
+    {"id": "xhs-08", "file": "xhs-08-ios-subscription-tutorial.md", "title": "iOS用户必看：App Store订阅管理", "pillar": "tutorial", "day": 10},
+    {"id": "xhs-09", "file": "xhs-09-survey-100-people.md", "title": "100人调研：80%不知道订阅花了多少", "pillar": "data", "day": 11},
+    {"id": "xhs-10", "file": "xhs-10-regulation-good-news.md", "title": "好消息！自动续费新规解读", "pillar": "data", "day": 12},
+    {"id": "xhs-11", "file": "xhs-11-final-summary-cta.md", "title": "两周审计总结：年省¥2000+", "pillar": "story", "day": 14}
+  ],
+  "zhihu": [
+    {"id": "zh-01", "file": "zh-01-auto-renewal-regulation.md", "title": "为什么中国自动续费越来越难取消？", "pillar": "data", "day": 1},
+    {"id": "zh-02", "file": "zh-02-subscription-spending-calculator.md", "title": "普通中国年轻人一年在订阅上花多少钱？", "pillar": "data", "day": 3},
+    {"id": "zh-03", "file": "zh-03-subscription-fatigue.md", "title": "订阅疲劳：一个被忽视的中国消费者困境", "pillar": "data", "day": 9},
+    {"id": "zh-04", "file": "zh-04-hidden-subscriptions-deep.md", "title": "隐形订阅：正在悄悄吃掉你工资的订阅黑洞", "pillar": "story", "day": 6},
+    {"id": "zh-05", "file": "zh-05-platform-management-guide.md", "title": "四个你必须定期检查的自动扣费入口", "pillar": "tutorial", "day": 10}
+  ]
+}

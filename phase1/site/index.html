@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>订阅雷达 SubRadar — 你的AI订阅侦探</title>
+<meta name="description" content="AI自动发现你所有的订阅，提前预警续费，帮你每年省下数千元的隐形支出。免费订阅计算器，无需注册。">
+<meta property="og:title" content="订阅雷达 — 你被偷偷扣了多少钱？">
+<meta property="og:description" content="免费AI订阅计算器，30秒看清你的订阅支出全貌。">
+<meta property="og:type" content="website">
+<style>
+:root {
+  --primary: #6C5CE7;
+  --primary-dark: #5A4BD1;
+  --danger: #E17055;
+  --bg: #F8F9FA;
+  --card: #FFFFFF;
+  --text: #2D3436;
+  --text-secondary: #636E72;
+  --border: #DFE6E9;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Nav */
+nav {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+nav .logo { font-weight: 800; font-size: 20px; color: var(--primary); }
+nav .logo span { font-size: 14px; color: var(--text-secondary); margin-left: 8px; }
+nav a { color: var(--text); text-decoration: none; margin-left: 24px; font-size: 14px; font-weight: 500; }
+nav a:hover { color: var(--primary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #6C5CE7 0%, #A855F7 50%, #E879F9 100%);
+  color: white;
+  padding: 80px 24px;
+  text-align: center;
+}
+.hero h1 { font-size: 42px; font-weight: 800; margin-bottom: 16px; line-height: 1.2; }
+.hero .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.hero .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.hero .btn {
+  padding: 16px 36px; border-radius: 14px; font-size: 17px; font-weight: 700;
+  text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
+}
+.hero .btn-primary { background: white; color: var(--primary); }
+.hero .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+.hero .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.5); }
+.hero .btn-outline:hover { background: rgba(255,255,255,0.1); }
+.hero .stats {
+  display: flex; gap: 40px; justify-content: center; margin-top: 48px;
+  flex-wrap: wrap;
+}
+.hero .stat { text-align: center; }
+.hero .stat .num { font-size: 32px; font-weight: 800; }
+.hero .stat .label { font-size: 13px; opacity: 0.75; margin-top: 4px; }
+
+/* Sections */
+section { padding: 64px 24px; max-width: 1100px; margin: 0 auto; }
+.section-title { text-align: center; margin-bottom: 48px; }
+.section-title h2 { font-size: 30px; font-weight: 800; margin-bottom: 8px; }
+.section-title p { color: var(--text-secondary); font-size: 16px; }
+
+/* Calculator embed */
+.calc-frame {
+  width: 100%; height: 800px; border: none;
+  border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+/* Blog cards */
+.blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+.blog-card {
+  background: white; border-radius: 14px; overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04); transition: all 0.2s;
+  text-decoration: none; color: inherit; display: block;
+}
+.blog-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+.blog-card .card-body { padding: 24px; }
+.blog-card .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-bottom: 8px; }
+.blog-card h3 { font-size: 18px; margin-bottom: 8px; line-height: 1.4; }
+.blog-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+
+/* Experiment card */
+.exp-card {
+  background: linear-gradient(135deg, #FDCB6E, #E17055);
+  border-radius: 16px; padding: 48px; text-align: center; color: white;
+}
+.exp-card h2 { font-size: 28px; margin-bottom: 12px; }
+.exp-card p { font-size: 16px; opacity: 0.9; margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto; }
+.exp-card .btn { padding: 14px 32px; border-radius: 12px; background: white; color: var(--danger); font-weight: 700; font-size: 16px; text-decoration: none; display: inline-block; }
+
+/* Footer */
+footer {
+  text-align: center; padding: 40px 24px;
+  color: var(--text-secondary); font-size: 13px;
+  border-top: 1px solid var(--border);
+}
+footer a { color: var(--primary); text-decoration: none; }
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: 28px; }
+  .hero .subtitle { font-size: 16px; }
+  .hero .stats { gap: 20px; }
+  .hero .stat .num { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">🕵️ 订阅雷达 <span>SubRadar</span></div>
+  <div>
+    <a href="#calculator">计算器</a>
+    <a href="#blog">文章</a>
+    <a href="#experiment">体验AI</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>你被偷偷扣了多少钱？</h1>
+  <p class="subtitle">AI自动发现你所有的订阅，提前预警续费。平均用户年省 ¥1,500+。</p>
+  <div class="cta-buttons">
+    <a href="#calculator" class="btn btn-primary">🖩 免费计算你的订阅支出</a>
+    <a href="#experiment" class="btn btn-outline">🤖 体验AI订阅扫描</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="num">20万+</div><div class="label">自动续费投诉量</div></div>
+    <div class="stat"><div class="num">¥1,500</div><div class="label">人均年浪费</div></div>
+    <div class="stat"><div class="num">68%</div><div class="label">低估自己支出</div></div>
+  </div>
+</div>
+
+<!-- Calculator -->
+<section id="calculator">
+  <div class="section-title">
+    <h2>📊 订阅计算器</h2>
+    <p>输入你的订阅，看清全貌。数据仅保存在你的浏览器中。</p>
+  </div>
+  <iframe src="calculator.html" class="calc-frame" title="订阅计算器"></iframe>
+</section>
+
+<!-- Blog -->
+<section id="blog">
+  <div class="section-title">
+    <h2>📝 订阅管理指南</h2>
+    <p>从发现隐形订阅到彻底掌控你的支出</p>
+  </div>
+  <div class="blog-grid" id="blogGrid"></div>
+</section>
+
+<!-- Experiment CTA -->
+<section id="experiment">
+  <div class="exp-card">
+    <h2>🤖 体验AI订阅扫描</h2>
+    <p>用模拟数据体验一次AI自动解析支付短信 —— 看看它有多聪明，再决定是否信任它。</p>
+    <a href="experiment/index.html" class="btn">开始体验（1分钟）</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 <a href="#">订阅雷达 SubRadar</a> · AI订阅侦探 · 即将正式上线</p>
+  <p style="margin-top:8px;">数据仅保存在你的设备上 · 我们承诺不存储任何个人支付信息</p>
+</footer>
+
+<script>
+// Blog articles data
+const articles = [
+  { tag: "教程", title: "微信自动续费关闭教程：30秒搞定", desc: "图文详解微信免密支付/自动扣款的管理入口，手把手教你关闭不需要的续费。", url: "blog/wechat-tutorial.html" },
+  { tag: "数据", title: "普通中国年轻人一年在订阅上花多少钱？", desc: "基于真实消费的账单拆解——视频、音乐、网盘、健身……加起来可能够一趟旅行。", url: "blog/subscription-spending.html" },
+  { tag: "故事", title: "我翻了12个月支付记录，发现了3000块的隐形订阅", desc: "11个订阅，月均¥263，其中至少一半是纯浪费。这个发现改变了我对'小钱'的认知。", url: "blog/3000-hidden-subs.html" },
+  { tag: "教程", title: "支付宝自动扣款管理完整指南", desc: "比微信更清晰！支付宝的扣费管理和账单分析功能使用详解。", url: "blog/alipay-tutorial.html" },
+  { tag: "深度", title: "订阅疲劳：一个被忽视的中国消费者困境", desc: "从行为经济学角度解读为什么我们总是忘记取消订阅，以及监管正在如何改变这一切。", url: "blog/subscription-fatigue.html" },
+  { tag: "教程", title: "四个你必须定期检查的自动扣费入口", desc: "微信、支付宝、银行卡、App Store——没有一个统一的视图，这是最大的问题。", url: "blog/platform-guide.html" },
+  { tag: "对比", title: "视频会员怎么选最省钱？四大平台全面对比", desc: "腾讯/爱奇艺/优酷/B站——大多数人只需要1-2个，其他的按需开月付。", url: "blog/video-comparison.html" },
+  { tag: "教程", title: "iOS用户必看：App Store订阅管理", desc: "iPhone用户的订阅坑最大——有些App删了几年了还在续费。3步检查。", url: "blog/ios-tutorial.html" },
+  { tag: "政策", title: "好消息！自动续费新规全面解读", desc: "2024-2025年密集出台的消费者保护法规，正在改变自动续费的游戏规则。", url: "blog/regulation.html" },
+];
+
+// Render blog grid
+const grid = document.getElementById('blogGrid');
+articles.forEach(a => {
+  grid.innerHTML += `
+    <a href="${a.url}" class="blog-card">
+      <div class="card-body">
+        <div class="tag">${a.tag}</div>
+        <h3>${a.title}</h3>
+        <p>${a.desc}</p>
+      </div>
+    </a>`;
+});
+</script>
+</body>
+</html>
