@@ -1,162 +1,102 @@
 [
   {
-    "name": "微信支付",
-    "aliases": ["微信", "微信免密支付", "微信自动扣费", "微信自动续费"],
-    "category": "支付平台",
-    "icon": "💚",
-    "steps": [
-      "打开微信 → 点击底部「我」",
-      "点击「服务」→「钱包」",
-      "滑到底部 →「支付设置」",
-      "点击「免密支付/自动扣款」",
-      "找到要取消的项目 → 点击进入",
-      "点击底部「关闭服务」→ 确认关闭"
-    ],
-    "tip": "关闭后当前已付费周期仍有效，到期后不再扣费。建议截图留存。",
-    "difficulty": "⭐⭐（2/5）",
-    "time": "约1分钟"
+    "name": "微信支付", "aliases": ["微信", "微信免密支付", "微信自动扣费"], "region": "cn",
+    "category": "支付平台", "icon": "💚",
+    "steps": ["打开微信 → 点击底部「我」","点击「服务」→「钱包」","滑到底部 →「支付设置」","点击「免密支付/自动扣款」","找到要取消的项目 → 点击进入","点击底部「关闭服务」→ 确认关闭"],
+    "tip": "关闭后当前已付费周期仍有效，到期后不再扣费。建议截图留存。"
   },
   {
-    "name": "支付宝",
-    "aliases": ["支付宝免密支付", "支付宝自动扣费", "支付宝自动续费", "zfb"],
-    "category": "支付平台",
-    "icon": "💙",
-    "steps": [
-      "打开支付宝 → 点击底部「我的」",
-      "点击右上角⚙️「设置」",
-      "点击「支付设置」",
-      "点击「免密支付/自动扣款」",
-      "找到要取消的项目 → 点击进入",
-      "点击底部「关闭服务」→ 确认"
-    ],
-    "tip": "支付宝支持按「最近扣费」排序，优先关注排在前面的项目。也可在账单页搜索「会员」「VIP」「续费」快速定位。",
-    "difficulty": "⭐（1/5）",
-    "time": "约30秒"
+    "name": "支付宝", "aliases": ["支付宝免密支付", "支付宝自动扣费", "zfb"], "region": "cn",
+    "category": "支付平台", "icon": "💙",
+    "steps": ["打开支付宝 → 点击底部「我的」","点击右上角⚙️「设置」","点击「支付设置」","点击「免密支付/自动扣款」","找到要取消的项目 → 点击进入","点击底部「关闭服务」→ 确认"],
+    "tip": "支付宝支持按最近扣费排序。也可在账单页搜索「会员」「VIP」快速定位所有订阅扣款。"
   },
   {
-    "name": "爱奇艺",
-    "aliases": ["爱奇艺VIP", "爱奇艺会员", "iqiyi"],
-    "category": "视频",
-    "icon": "📺",
-    "steps": [
-      "打开爱奇艺App → 点击底部「我的」",
-      "点击「我的VIP会员」",
-      "点击「管理自动续费」",
-      "点击「关闭自动续费」→ 确认",
-      "（如果是通过微信/支付宝开通的，会自动跳转到对应平台关闭）"
-    ],
-    "tip": "如果在App内找不到取消入口，说明是通过微信或支付宝开通的。直接去微信/支付宝的免密支付页面操作即可。",
-    "difficulty": "⭐⭐⭐（3/5）",
-    "time": "约2分钟"
+    "name": "爱奇艺", "aliases": ["爱奇艺VIP", "爱奇艺会员", "iqiyi"], "region": "cn",
+    "category": "视频", "icon": "📺",
+    "steps": ["打开爱奇艺App → 点击底部「我的」","点击「我的VIP会员」","点击「管理自动续费」","点击「关闭自动续费」→ 确认","（如通过微信/支付宝开通，会自动跳转到对应平台关闭）"],
+    "tip": "App内找不到取消入口 = 通过微信/支付宝开通。直接去微信/支付宝的免密支付页面操作。"
   },
   {
-    "name": "腾讯视频",
-    "aliases": ["腾讯视频VIP", "腾讯会员", "tencent video"],
-    "category": "视频",
-    "icon": "📺",
-    "steps": [
-      "打开腾讯视频App → 点击底部「个人中心」",
-      "点击「我的VIP会员」",
-      "点击「管理自动续费」",
-      "点击「关闭自动续费」→ 确认",
-      "（如果是通过苹果App Store订阅的，跳转至iPhone设置→Apple ID→订阅中操作）"
-    ],
-    "tip": "腾讯视频年费到期前通常有大促（618、双11），等促销再续更划算。",
-    "difficulty": "⭐⭐⭐（3/5）",
-    "time": "约2分钟"
+    "name": "腾讯视频", "aliases": ["腾讯视频VIP", "腾讯会员"], "region": "cn",
+    "category": "视频", "icon": "📺",
+    "steps": ["打开腾讯视频App → 点击底部「个人中心」","点击「我的VIP会员」","点击「管理自动续费」","点击「关闭自动续费」→ 确认","（如通过Apple App Store订阅，跳转iPhone设置→Apple ID→订阅）"],
+    "tip": "年费到期前通常有大促（618、双11），等促销再续更划算。"
   },
   {
-    "name": "B站",
-    "aliases": ["bilibili", "哔哩哔哩", "B站大会员", "B站会员"],
-    "category": "视频",
-    "icon": "📺",
-    "steps": [
-      "打开B站App → 点击底部「我的」",
-      "点击「大会员」",
-      "点击右上角「···」或「设置」",
-      "点击「自动续费管理」",
-      "点击「关闭自动续费」→ 确认"
-    ],
-    "tip": "B站大会员支持家庭共享（最多2人），找朋友拼更便宜。",
-    "difficulty": "⭐⭐（2/5）",
-    "time": "约1分钟"
+    "name": "B站", "aliases": ["bilibili", "哔哩哔哩", "B站大会员", "b站"], "region": "cn",
+    "category": "视频", "icon": "📺",
+    "steps": ["打开B站App → 点击底部「我的」","点击「大会员」","点击右上角「···」或「设置」","点击「自动续费管理」","点击「关闭自动续费」→ 确认"],
+    "tip": "B站大会员支持家庭共享（最多2人），找朋友拼更便宜。"
   },
   {
-    "name": "网易云音乐",
-    "aliases": ["网易云", "网易云黑胶", "netease"],
-    "category": "音乐",
-    "icon": "🎵",
-    "steps": [
-      "打开网易云音乐App → 点击底部「我的」",
-      "点击「会员中心」",
-      "点击右上角「···」或「设置」",
-      "点击「自动续费管理」",
-      "点击「关闭自动续费」→ 确认"
-    ],
-    "tip": "网易云音乐经常有学生优惠和联合会员（如88VIP+网易云），单独买月付最不划算。",
-    "difficulty": "⭐⭐（2/5）",
-    "time": "约1分钟"
+    "name": "网易云音乐", "aliases": ["网易云", "网易云黑胶"], "region": "cn",
+    "category": "音乐", "icon": "🎵",
+    "steps": ["打开网易云音乐App → 点击底部「我的」","点击「会员中心」","点击右上角「···」或「设置」","点击「自动续费管理」","点击「关闭自动续费」→ 确认"],
+    "tip": "经常有学生优惠和联合会员（如88VIP+网易云），单独月付最不划算。"
   },
   {
-    "name": "QQ音乐",
-    "aliases": ["QQ音乐绿钻", "QQ音乐会员", "qqmusic"],
-    "category": "音乐",
-    "icon": "🎵",
-    "steps": [
-      "打开QQ音乐App → 点击底部「我的」",
-      "点击「会员中心」",
-      "点击「管理自动续费」",
-      "点击「关闭自动续费」→ 确认",
-      "（如果是通过微信开通的，跳转至微信支付管理页面）"
-    ],
-    "tip": "QQ音乐绿钻通过微信开通的比例极高。如果App内找不到，直接去微信→支付设置→免密支付里找。",
-    "difficulty": "⭐⭐⭐（3/5）",
-    "time": "约2分钟"
+    "name": "QQ音乐", "aliases": ["QQ音乐绿钻", "QQ音乐会员", "qq音乐"], "region": "cn",
+    "category": "音乐", "icon": "🎵",
+    "steps": ["打开QQ音乐App → 点击底部「我的」","点击「会员中心」","点击「管理自动续费」","点击「关闭自动续费」→ 确认","（如通过微信开通，跳转至微信支付管理页面）"],
+    "tip": "QQ音乐绿钻通过微信开通的比例极高。App内找不到直接去微信→支付设置→免密支付。"
   },
   {
-    "name": "百度网盘",
-    "aliases": ["百度网盘SVIP", "百度云", "baiduyun"],
-    "category": "网盘",
-    "icon": "☁️",
-    "steps": [
-      "打开百度网盘App → 点击底部「我的」",
-      "点击「我的会员」",
-      "点击「管理自动续费」",
-      "点击「关闭自动续费」→ 确认"
-    ],
-    "tip": "百度网盘年费¥298，但双11/618通常有6-8折。建议到期前1个月标记日历，等促销再续。已购买的时间不受取消影响。",
-    "difficulty": "⭐⭐（2/5）",
-    "time": "约1分钟"
+    "name": "百度网盘", "aliases": ["百度网盘SVIP", "百度云", "百度云盘"], "region": "cn",
+    "category": "网盘", "icon": "☁️",
+    "steps": ["打开百度网盘App → 点击底部「我的」","点击「我的会员」","点击「管理自动续费」","点击「关闭自动续费」→ 确认"],
+    "tip": "年费¥298，双11/618通常6-8折。建议到期前等促销再续。"
   },
   {
-    "name": "iCloud",
-    "aliases": ["icloud", "iCloud+", "iCloud存储", "苹果iCloud", "Apple iCloud"],
-    "category": "网盘",
-    "icon": "☁️",
-    "steps": [
-      "iPhone：打开「设置」→ 点击顶部你的名字(Apple ID)",
-      "点击「iCloud」→「管理账户存储空间」",
-      "点击「更改存储方案」→「降级选项」",
-      "选择「免费5GB」或其他更低档位 → 点击「完成」"
-    ],
-    "tip": "降级后当前周期仍有效，到期后才降为低档。降级前确保iCloud中的内容已备份到本地或其他网盘。家庭共享的iCloud由组织者管理。",
-    "difficulty": "⭐⭐（2/5）",
-    "time": "约1分钟"
+    "name": "iCloud+", "aliases": ["iCloud", "icloud", "苹果iCloud", "iCloud存储"], "region": "cn",
+    "category": "网盘", "icon": "☁️",
+    "steps": ["iPhone：打开「设置」→ 点击顶部你的名字(Apple ID)","点击「iCloud」→「管理账户存储空间」","点击「更改存储方案」→「降级选项」","选择「免费5GB」或其他更低档位 → 完成"],
+    "tip": "降级后当前周期仍有效。降级前确保iCloud内容已备份。"
   },
   {
-    "name": "京东PLUS",
-    "aliases": ["京东", "京东会员", "JD PLUS", "jdplus"],
-    "category": "购物",
-    "icon": "🛒",
-    "steps": [
-      "打开京东App → 点击底部「我的」",
-      "点击「PLUS会员」",
-      "点击右上角「···」或「设置」",
-      "点击「自动续费管理」",
-      "点击「关闭自动续费」→ 确认"
-    ],
-    "tip": "京东PLUS经常和腾讯视频/爱奇艺/QQ音乐等联合售卖（联名卡），如果只为一个开的，退掉换联名卡更划算。",
-    "difficulty": "⭐⭐（2/5）",
-    "time": "约1分钟"
+    "name": "京东PLUS", "aliases": ["京东", "京东会员", "jd plus"], "region": "cn",
+    "category": "购物", "icon": "🛒",
+    "steps": ["打开京东App → 点击底部「我的」","点击「PLUS会员」","点击右上角「···」或「设置」","点击「自动续费管理」","点击「关闭自动续费」→ 确认"],
+    "tip": "常和腾讯视频/爱奇艺联名。如果只为一个开的，退掉换联名卡更划算。"
+  },
+  {
+    "name": "Netflix", "aliases": ["netflix", "奈飞"], "region": "intl",
+    "category": "视频", "icon": "🎬",
+    "steps": ["Go to netflix.com → Sign in","Click your profile icon (top-right) → Account","Under 'Membership & Billing', click 'Cancel Membership'","Confirm cancellation → Your access continues until end of billing period"],
+    "steps_zh": ["打开 netflix.com → 登录账号","点击右上角头像 →「账户」","在「会员与账单」下，点击「取消会员」","确认取消 → 当前付费周期内仍可观看"],
+    "tip": "Your plan stays active until the end of your current billing cycle. You can restart anytime — your profile and watch history are saved for 10 months.",
+    "tip_zh": "取消后当前周期内仍可观看。你的个人资料和观看记录会保留10个月，随时可恢复。"
+  },
+  {
+    "name": "Spotify", "aliases": ["spotify", "spotify premium"], "region": "intl",
+    "category": "音乐", "icon": "🎧",
+    "steps": ["Go to spotify.com → Log in","Click your profile → Account","Under 'Your plan', click 'Change plan'","Scroll down → 'Cancel Premium'","Confirm → Your account switches to Free at end of billing period"],
+    "steps_zh": ["打开 spotify.com → 登录","点击头像 →「账户」","在「你的方案」下，点击「更改方案」","向下滚动 →「取消 Premium」","确认 → 当前周期结束后自动切换为免费版"],
+    "tip": "Your playlists and saved music remain intact on the Free plan. You only lose offline downloads and unlimited skips.",
+    "tip_zh": "取消后歌单和收藏依然保留。仅失去离线下载和无限制切歌功能。"
+  },
+  {
+    "name": "Apple One", "aliases": ["apple one", "apple bundle"], "region": "intl",
+    "category": "工具", "icon": "🍎",
+    "steps": ["iPhone: Open Settings → Tap your name (Apple ID)","Tap 'Subscriptions'","Find 'Apple One' → Tap it","Tap 'Cancel Apple One' (or choose individual services)","Confirm → Bundle stays active until end of billing period"],
+    "steps_zh": ["iPhone：打开「设置」→ 点击你的名字(Apple ID)","点击「订阅」","找到「Apple One」→ 点击","点击「取消 Apple One」（或选择单独订阅所需服务）","确认 → 当前周期结束前套餐仍有效"],
+    "tip": "Apple One includes iCloud+, Music, TV+, Arcade. Canceling the bundle cancels ALL of these at once. Consider keeping individual services you actually use.",
+    "tip_zh": "Apple One 包含 iCloud+、Music、TV+、Arcade。取消套餐会同时取消所有服务。建议保留你实际使用的单项服务。"
+  },
+  {
+    "name": "YouTube Premium", "aliases": ["youtube", "youtube premium", "youtube music"], "region": "intl",
+    "category": "视频", "icon": "▶️",
+    "steps": ["Go to youtube.com → Sign in","Click your profile icon → 'Paid memberships'","Find YouTube Premium → Click 'Manage membership'","Click 'Cancel' or 'Pause'","Select reason → Confirm → Active until end of billing period"],
+    "steps_zh": ["打开 youtube.com → 登录","点击头像 →「付费会员」","找到 YouTube Premium → 点击「管理会员」","点击「取消」或「暂停」","选择原因 → 确认 → 当前周期结束前仍有效"],
+    "tip": "YouTube offers a 'Pause' option (up to 6 months) instead of full cancellation — useful if you just need a break.",
+    "tip_zh": "YouTube 提供「暂停」选项（最长6个月），如果只是暂时不用可以暂停而非取消。"
+  },
+  {
+    "name": "Amazon Prime", "aliases": ["amazon", "prime", "amazon prime video"], "region": "intl",
+    "category": "购物", "icon": "📦",
+    "steps": ["Go to amazon.com → Sign in","Hover over 'Account & Lists' → 'Your Prime Membership'","Click 'Manage Membership' → 'End Membership'","Review benefits you'll lose → 'Continue to Cancel'","Confirm → Your Prime stays active until end of billing period"],
+    "steps_zh": ["打开 amazon.com → 登录","鼠标悬停在「账户与列表」→「您的 Prime 会员」","点击「管理会员」→「结束会员」","查看你将失去的权益 →「继续取消」","确认 → 当前周期结束前 Prime 仍有效"],
+    "tip": "Amazon often offers a prorated refund if you haven't used Prime benefits in the current billing cycle. Check before canceling.",
+    "tip_zh": "如果你在当前周期内未使用 Prime 权益，Amazon 通常会按比例退款。取消前可先确认。"
   }
 ]

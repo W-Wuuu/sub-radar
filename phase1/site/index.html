@@ -2,246 +2,404 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>订阅雷达 — 查教程 · 算账单 · 管到期</title>
-<meta name="description" content="免费订阅管理工具包：查取消教程、计算订阅账单、设置到期邮件提醒。10+主流平台，无需注册。">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>订阅雷达 · SubRadar</title>
+<meta name="description" content="查教程 · 算账单 · 管到期 — 免费订阅管理工具包。Cancel guides, subscription calculator, renewal alerts.">
 <style>
 :root {
-  --p: #6C5CE7; --pd: #5A4BD1; --r: #E17055;
-  --bg: #F8F9FA; --c: #FFF; --t: #2D3436; --ts: #636E72; --b: #DFE6E9;
+  --blue: #007AFF; --bgh: #F2F2F7; --bg: #FFFFFF; --t: #1D1D1F; --ts: #86868B; --b: #D1D1D6; --r: #FF3B30; --g: #34C759;
+  --radius: 16px;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--t); line-height: 1.6; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--t); line-height: 1.5; -webkit-font-smoothing: antialiased; }
 
-/* Header */
-header { background: linear-gradient(135deg, #6C5CE7, #A855F7); color: white; padding: 40px 20px 36px; text-align: center; }
-header h1 { font-size: 26px; font-weight: 800; }
-header p { font-size: 14px; opacity: 0.85; margin-top: 4px; }
+/* Nav */
+nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--b); }
+nav .logo { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; color: var(--t); }
+nav .lang-btn { font-size: 14px; font-weight: 600; color: var(--blue); background: none; border: 1.5px solid var(--blue); border-radius: 20px; padding: 6px 16px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+nav .lang-btn:hover { background: var(--blue); color: white; }
 
-/* Tabs */
-.tabs { display: flex; gap: 4px; max-width: 640px; margin: -18px auto 0; padding: 0 16px; position: relative; z-index: 1; }
-.tab { flex: 1; padding: 14px 8px; border: none; border-radius: 14px 14px 0 0; font-size: 15px; font-weight: 700; cursor: pointer; background: #EDE7F6; color: var(--p); transition: all 0.2s; font-family: inherit; }
-.tab.active { background: white; color: var(--t); box-shadow: 0 -2px 12px rgba(0,0,0,0.04); }
-.tab .emoji { font-size: 18px; display: block; margin-bottom: 2px; }
+/* Section */
+section { max-width: 680px; margin: 0 auto; padding: 48px 20px; }
 
-/* Container */
-.container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; }
+/* Hero */
+.hero { text-align: center; padding: 56px 20px 40px; }
+.hero .tag { display: inline-block; font-size: 13px; font-weight: 600; color: var(--blue); background: #E8F2FF; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px; letter-spacing: 0.5px; }
+.hero h1 { font-size: 44px; font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 10px; }
+.hero .sub { font-size: 18px; color: var(--ts); font-weight: 400; max-width: 400px; margin: 0 auto 36px; line-height: 1.4; }
+.hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.hero-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 20px 28px; border-radius: var(--radius); border: none; cursor: pointer; text-decoration: none; transition: all 0.2s; font-family: inherit; min-width: 120px; }
+.hero-btn .h-icon { font-size: 32px; }
+.hero-btn .h-label { font-size: 15px; font-weight: 700; }
+.hero-btn .h-sub { font-size: 11px; font-weight: 400; }
+.hero-btn.primary { background: var(--blue); color: white; }
+.hero-btn.primary:hover { background: #0066D6; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,122,255,0.25); }
+.hero-btn.outline { background: white; color: var(--blue); border: 2px solid #E8F2FF; }
+.hero-btn.outline:hover { background: #F5F9FF; border-color: var(--blue); transform: translateY(-2px); }
 
-/* Panels */
-.panel { display: none; background: white; border-radius: 0 0 16px 16px; padding: 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.04); }
-.panel.active { display: block; }
-.panel h2 { font-size: 20px; margin-bottom: 16px; }
+/* Divider */
+.divider { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+.divider .line { height: 0.5px; background: var(--b); }
+.divider .label { text-align: center; margin-top: -11px; }
+.divider .label span { background: white; padding: 0 16px; font-size: 12px; color: var(--ts); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+
+/* Card */
+.card { background: var(--bg); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; border: 0.5px solid var(--b); transition: box-shadow 0.2s; }
+.card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+.card h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 6px; }
+.card .card-sub { font-size: 14px; color: var(--ts); margin-bottom: 20px; line-height: 1.4; }
+
+/* Section header with icon circle */
+.section-icon { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+.section-icon.blue { background: #E8F2FF; }
+.section-icon.green { background: #E5F9E9; }
+.section-icon.orange { background: #FFF3E0; }
 
 /* ===== 查 ===== */
-.search-box { display: flex; gap: 8px; margin-bottom: 16px; }
-.search-box input { flex: 1; padding: 14px 16px; border: 2px solid var(--b); border-radius: 12px; font-size: 16px; font-family: inherit; }
-.search-box input:focus { outline: none; border-color: var(--p); }
-.search-box button { padding: 14px 20px; background: var(--p); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; }
-.quick-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
-.chip { padding: 6px 12px; background: #F0EDFF; border: 1px solid #D5CCF7; border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; font-family: inherit; color: var(--p); }
-.chip:hover { background: var(--p); color: white; border-color: var(--p); }
-.result-card { background: #F8F6FF; border-radius: 14px; padding: 20px; margin-top: 16px; display: none; }
-.result-card.show { display: block; }
-.result-card .plat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-.result-card .plat-icon { font-size: 32px; }
-.result-card .plat-name { font-size: 20px; font-weight: 800; }
-.result-card .plat-meta { font-size: 13px; color: var(--ts); margin-top: 2px; }
-.result-card ol { margin: 0 0 16px 20px; }
-.result-card ol li { padding: 6px 0; font-size: 14px; line-height: 1.6; }
-.result-card .tip { background: #FFF9E6; padding: 12px 16px; border-radius: 10px; font-size: 13px; color: #8B6914; }
+.search-box { display: flex; gap: 8px; }
+.search-box input { flex:1; padding: 14px 18px; border: 1.5px solid var(--b); border-radius: 12px; font-size: 16px; font-family: inherit; background: #F9F9FB; transition: all 0.15s; }
+.search-box input:focus { outline: none; border-color: var(--blue); background: white; box-shadow: 0 0 0 3px rgba(0,122,255,0.08); }
+.search-box button { padding: 14px 22px; background: var(--blue); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+.search-box button:hover { background: #0066D6; }
+.quick-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; }
+.chip { padding: 7px 14px; background: #F9F9FB; border: 0.5px solid var(--b); border-radius: 20px; font-size: 13px; cursor: pointer; font-family: inherit; color: var(--t); transition: all 0.15s; }
+.chip:hover { background: var(--blue); color: white; border-color: var(--blue); }
+.chip.intl { background: #FFF9E6; }
+.chip.intl:hover { background: #FF9500; border-color: #FF9500; color: white; }
+
+.result-card { background: #F9F9FB; border-radius: var(--radius); padding: 24px; margin-top: 16px; display: none; border: 0.5px solid var(--b); }
+.result-card.show { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+.result-card .rhead { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.result-card .ricon { font-size: 36px; }
+.result-card .rname { font-size: 22px; font-weight: 700; }
+.result-card .rmeta { font-size: 13px; color: var(--ts); }
+.result-card .region-tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; margin-left: 8px; }
+.result-card .region-tag.cn { background: #FFE5E5; color: #C00; }
+.result-card .region-tag.intl { background: #E5F0FF; color: #06C; }
+.result-card ol { margin: 0 0 14px 20px; }
+.result-card ol li { padding: 7px 0; font-size: 15px; line-height: 1.5; }
+.result-card .tip { background: #FFF9E6; padding: 12px 16px; border-radius: 10px; font-size: 13px; color: #8B6914; line-height: 1.5; }
+.no-result { text-align: center; padding: 30px; color: var(--ts); }
 
 /* ===== 算 ===== */
-.calc-frame { width: 100%; height: 750px; border: none; border-radius: 12px; }
+.calc-frame { width: 100%; height: 750px; border: none; border-radius: var(--radius); }
 
 /* ===== 管 ===== */
-.reminder-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-.reminder-form input { padding: 14px 16px; border: 2px solid var(--b); border-radius: 12px; font-size: 15px; font-family: inherit; }
-.reminder-form input:focus { outline: none; border-color: var(--p); }
-.reminder-form .row { display: flex; gap: 8px; }
-.reminder-form .row input { flex: 1; }
-.reminder-form button { padding: 14px; background: var(--p); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit; }
-.reminder-form button:disabled { background: #B2BEC3; cursor: not-allowed; }
-.quota-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; color: var(--ts); }
-.quota-bar .dots { display: flex; gap: 4px; }
-.quota-bar .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--b); }
-.quota-bar .dot.used { background: var(--p); }
+.form-group { margin-bottom: 12px; }
+.form-group input { width: 100%; padding: 14px 18px; border: 1.5px solid var(--b); border-radius: 12px; font-size: 16px; font-family: inherit; background: #F9F9FB; transition: all 0.15s; }
+.form-group input:focus { outline: none; border-color: var(--blue); background: white; box-shadow: 0 0 0 3px rgba(0,122,255,0.08); }
+.form-row { display: flex; gap: 8px; }
+.form-row .form-group { flex: 1; }
+.btn-primary { width: 100%; padding: 16px; background: var(--blue); color: white; border: none; border-radius: 12px; font-size: 17px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+.btn-primary:hover { background: #0066D6; }
+.btn-primary:disabled { background: #B2BEC3; cursor: not-allowed; }
+.quota-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; font-size: 14px; color: var(--ts); }
+.quota-dots { display: flex; gap: 5px; }
+.quota-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--b); }
+.quota-dot.used { background: var(--blue); }
 .reminder-list { list-style: none; }
-.reminder-item { display: flex; justify-content: space-between; align-items: center; padding: 14px; background: #F8F9FA; border-radius: 10px; margin-bottom: 8px; }
-.reminder-item .rinfo { flex:1; }
-.reminder-item .rname { font-weight: 700; font-size: 15px; }
-.reminder-item .rdate { font-size: 12px; color: var(--ts); }
-.reminder-item .rdelete { width: 32px; height: 32px; border-radius: 8px; border: none; background: #FFEAA7; color: var(--r); font-size: 18px; cursor: pointer; }
-.empty-state { text-align: center; padding: 30px; color: var(--ts); }
-.empty-state .big-emoji { font-size: 40px; margin-bottom: 8px; }
+.reminder-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #F9F9FB; border-radius: 12px; margin-bottom: 8px; border: 0.5px solid var(--b); }
+.reminder-item .ri { flex: 1; }
+.reminder-item .rn { font-weight: 600; font-size: 16px; }
+.reminder-item .rd { font-size: 13px; color: var(--ts); margin-top: 2px; }
+.reminder-item .rx { width: 34px; height: 34px; border-radius: 50%; border: none; background: #FFE5E5; color: var(--r); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.reminder-item .rx:hover { background: var(--r); color: white; }
+.empty { text-align: center; padding: 32px 20px; color: var(--ts); }
+.empty .eicon { font-size: 40px; margin-bottom: 8px; }
 
-/* Footer */
-footer { text-align: center; padding: 24px; color: var(--ts); font-size: 12px; border-top: 1px solid var(--b); margin-top: 32px; }
-footer a { color: var(--p); text-decoration: none; }
+footer { text-align: center; padding: 32px 20px; color: var(--ts); font-size: 12px; border-top: 0.5px solid var(--b); margin-top: 20px; }
+footer a { color: var(--blue); text-decoration: none; }
 
-@media (max-width: 500px) {
-  header h1 { font-size: 22px; }
-  .tab { font-size: 13px; padding: 12px 6px; }
-  .tab .emoji { font-size: 16px; }
+@media (max-width: 480px) {
+  .hero h1 { font-size: 32px; }
+  .hero .sub { font-size: 16px; }
+  .hero-btns { flex-direction: column; align-items: stretch; }
+  .hero-btn { flex-direction: row; justify-content: center; gap: 10px; padding: 16px; }
 }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>🕵️ 订阅雷达</h1>
-  <p>查教程 · 算账单 · 管到期 — 三合一订阅管理工具包</p>
-</header>
+<nav>
+  <div class="logo">🕵️ 订阅雷达</div>
+  <button class="lang-btn" onclick="toggleLang()" id="langBtn">English</button>
+</nav>
 
-<div class="tabs">
-  <button class="tab active" onclick="switchTab('search')"><span class="emoji">🔍</span>查教程</button>
-  <button class="tab" onclick="switchTab('calc')"><span class="emoji">🖩</span>算账单</button>
-  <button class="tab" onclick="switchTab('remind')"><span class="emoji">⏰</span>管到期</button>
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div class="tag" id="heroTag">三合一订阅管理工具包</div>
+  <h1 id="heroTitle">查教程 · 算账单<br>管到期</h1>
+  <p class="sub" id="heroSub">免费、无需注册、数据只保存在你的设备上</p>
+  <div class="hero-btns">
+    <a href="#search" class="hero-btn primary"><span class="h-icon">🔍</span><span class="h-label" id="hb1">查教程</span><span class="h-sub" id="hs1">取消步骤</span></a>
+    <a href="#calc" class="hero-btn outline"><span class="h-icon">🖩</span><span class="h-label" id="hb2">算账单</span><span class="h-sub" id="hs2">月度/年度</span></a>
+    <a href="#remind" class="hero-btn outline"><span class="h-icon">⏰</span><span class="h-label" id="hb3">管到期</span><span class="h-sub" id="hs3">邮件提醒</span></a>
+  </div>
 </div>
 
-<div class="container">
-
-  <!-- ============ 查 ============ -->
-  <div class="panel active" id="panel-search">
-    <h2>🔍 查取消教程</h2>
-    <p style="color:var(--ts);font-size:14px;margin-bottom:16px;">输入平台名称，查看详细的取消订阅步骤。</p>
+<!-- ============ 查 ============ -->
+<div class="divider"><div class="line"></div><div class="label"><span id="dl1">查教程</span></div></div>
+<section id="search">
+  <div class="card">
+    <div class="section-icon blue">🔍</div>
+    <h2 id="s1title">查取消教程</h2>
+    <p class="card-sub" id="s1sub">输入平台名称，查看详细的取消订阅步骤。已收录 15 个平台。</p>
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="输入平台名称，如：爱奇艺、微信支付…" onkeydown="if(event.key==='Enter')doSearch()">
-      <button onclick="doSearch()">查询</button>
+      <input type="text" id="searchInput" placeholder="输入平台名称…" onkeydown="if(event.key==='Enter')doSearch()">
+      <button onclick="doSearch()" id="searchBtn">查询</button>
     </div>
     <div class="quick-chips" id="quickChips"></div>
     <div class="result-card" id="resultCard">
-      <div class="plat-header">
-        <span class="plat-icon" id="platIcon"></span>
+      <div class="rhead">
+        <span class="ricon" id="ricon"></span>
         <div>
-          <div class="plat-name" id="platName"></div>
-          <div class="plat-meta" id="platMeta"></div>
+          <div class="rname" id="rname"></div>
+          <div class="rmeta" id="rmeta"></div>
         </div>
       </div>
-      <ol id="platSteps"></ol>
-      <div class="tip" id="platTip"></div>
+      <ol id="rsteps"></ol>
+      <div class="tip" id="rtip"></div>
     </div>
   </div>
+</section>
 
-  <!-- ============ 算 ============ -->
-  <div class="panel" id="panel-calc">
-    <h2>🖩 算订阅账单</h2>
-    <p style="color:var(--ts);font-size:14px;margin-bottom:16px;">输入你的订阅，自动计算月度/年度/5年总支出。数据仅保存在你的浏览器中。</p>
+<!-- ============ 算 ============ -->
+<div class="divider"><div class="line"></div><div class="label"><span id="dl2">算账单</span></div></div>
+<section id="calc">
+  <div class="card">
+    <div class="section-icon green">🖩</div>
+    <h2 id="s2title">算订阅账单</h2>
+    <p class="card-sub" id="s2sub">输入你的订阅，自动计算月度/年度/5年总支出。加总数字会让你做出更理性的决定。</p>
     <iframe src="calculator.html" class="calc-frame" title="订阅计算器"></iframe>
   </div>
+</section>
 
-  <!-- ============ 管 ============ -->
-  <div class="panel" id="panel-remind">
-    <h2>⏰ 管到期提醒</h2>
-    <p style="color:var(--ts);font-size:14px;margin-bottom:8px;">设置到期提醒，系统在到期前3天自动发送邮件。</p>
-    <div class="quota-bar">
-      <span>本月剩余提醒次数：</span>
-      <span class="dots" id="quotaDots"></span>
-      <span id="quotaText" style="font-weight:700;"></span>
+<!-- ============ 管 ============ -->
+<div class="divider"><div class="line"></div><div class="label"><span id="dl3">管到期</span></div></div>
+<section id="remind">
+  <div class="card">
+    <div class="section-icon orange">⏰</div>
+    <h2 id="s3title">管到期提醒</h2>
+    <p class="card-sub" id="s3sub">设置到期提醒，系统在到期前3天自动发送邮件。免费额度：每月3次。</p>
+    <div class="quota-row">
+      <span id="quotaLabel">本月剩余</span>
+      <div class="quota-dots" id="quotaDots"></div>
+      <span style="font-weight:600;" id="quotaText"></span>
     </div>
-    <div class="reminder-form">
-      <input type="text" id="remindName" placeholder="订阅名称（如：腾讯视频VIP）" maxlength="40">
-      <div class="row">
-        <input type="date" id="remindDate">
-        <input type="email" id="remindEmail" placeholder="你的邮箱地址">
-      </div>
-      <button id="remindBtn" onclick="addReminder()">🔔 设置提醒</button>
+    <div class="form-group"><input type="text" id="remindName" placeholder="订阅名称" maxlength="40"></div>
+    <div class="form-row">
+      <div class="form-group"><input type="date" id="remindDate"></div>
+      <div class="form-group"><input type="email" id="remindEmail" placeholder="邮箱地址"></div>
     </div>
-    <ul class="reminder-list" id="reminderList"></ul>
+    <button class="btn-primary" id="remindBtn" onclick="addReminder()">🔔 设置提醒</button>
+    <ul class="reminder-list" id="reminderList" style="margin-top:20px;"></ul>
   </div>
-
-</div>
+</section>
 
 <footer>
-  © 2026 <a href="/">订阅雷达 SubRadar</a> · 免费工具 · 数据仅保存在你的浏览器中
+  © 2026 <a href="/">订阅雷达 SubRadar</a> · 数据仅保存在你的浏览器中
 </footer>
 
 <script>
 // ============================================================
-// 平台数据（内嵌副本，减少网络请求）
+// i18n
 // ============================================================
-const PLATFORMS = [
-  {name:"微信支付",aliases:["微信","微信免密支付","微信自动扣费"],category:"支付平台",icon:"💚",steps:["打开微信 → 点击底部「我」","点击「服务」→「钱包」","滑到底部 →「支付设置」","点击「免密支付/自动扣款」","找到要取消的项目 → 点击进入","点击底部「关闭服务」→ 确认关闭"],tip:"关闭后当前已付费周期仍有效，到期后不再扣费。建议截图留存。",difficulty:"⭐⭐",time:"约1分钟"},
-  {name:"支付宝",aliases:["支付宝免密支付","支付宝自动扣费","zfb"],category:"支付平台",icon:"💙",steps:["打开支付宝 → 点击底部「我的」","点击右上角⚙️「设置」","点击「支付设置」","点击「免密支付/自动扣款」","找到要取消的项目 → 点击进入","点击底部「关闭服务」→ 确认"],tip:"支付宝支持按「最近扣费」排序。也可在账单页搜索「会员」「VIP」快速定位所有订阅扣款。",difficulty:"⭐",time:"约30秒"},
-  {name:"爱奇艺",aliases:["爱奇艺VIP","爱奇艺会员","iqiyi"],category:"视频",icon:"📺",steps:["打开爱奇艺App → 点击底部「我的」","点击「我的VIP会员」","点击「管理自动续费」","点击「关闭自动续费」→ 确认","（如通过微信/支付宝开通，会自动跳转到对应平台关闭）"],tip:"如果在App内找不到取消入口，说明是通过微信或支付宝开通的。直接去微信/支付宝的免密支付页面操作即可。",difficulty:"⭐⭐⭐",time:"约2分钟"},
-  {name:"腾讯视频",aliases:["腾讯视频VIP","腾讯会员"],category:"视频",icon:"📺",steps:["打开腾讯视频App → 点击底部「个人中心」","点击「我的VIP会员」","点击「管理自动续费」","点击「关闭自动续费」→ 确认","（如通过苹果App Store订阅，跳转至iPhone设置→Apple ID→订阅中操作）"],tip:"腾讯视频年费到期前通常有大促（618、双11），等促销再续更划算。",difficulty:"⭐⭐⭐",time:"约2分钟"},
-  {name:"B站",aliases:["bilibili","哔哩哔哩","B站大会员","b站"],category:"视频",icon:"📺",steps:["打开B站App → 点击底部「我的」","点击「大会员」","点击右上角「···」或「设置」","点击「自动续费管理」","点击「关闭自动续费」→ 确认"],tip:"B站大会员支持家庭共享（最多2人），找朋友拼更便宜。",difficulty:"⭐⭐",time:"约1分钟"},
-  {name:"网易云音乐",aliases:["网易云","网易云黑胶"],category:"音乐",icon:"🎵",steps:["打开网易云音乐App → 点击底部「我的」","点击「会员中心」","点击右上角「···」或「设置」","点击「自动续费管理」","点击「关闭自动续费」→ 确认"],tip:"网易云音乐经常有学生优惠和联合会员（如88VIP+网易云），单独月付最不划算。",difficulty:"⭐⭐",time:"约1分钟"},
-  {name:"QQ音乐",aliases:["QQ音乐绿钻","QQ音乐会员","qq音乐"],category:"音乐",icon:"🎵",steps:["打开QQ音乐App → 点击底部「我的」","点击「会员中心」","点击「管理自动续费」","点击「关闭自动续费」→ 确认","（如通过微信开通，跳转至微信支付管理页面）"],tip:"QQ音乐绿钻通过微信开通的比例极高。App内找不到的话，直接去微信→支付设置→免密支付里找。",difficulty:"⭐⭐⭐",time:"约2分钟"},
-  {name:"百度网盘",aliases:["百度网盘SVIP","百度云","百度云盘"],category:"网盘",icon:"☁️",steps:["打开百度网盘App → 点击底部「我的」","点击「我的会员」","点击「管理自动续费」","点击「关闭自动续费」→ 确认"],tip:"百度网盘年费¥298，双11/618通常6-8折。建议到期前标记日历，等促销再续。",difficulty:"⭐⭐",time:"约1分钟"},
-  {name:"iCloud+",aliases:["iCloud","icloud","苹果iCloud","iCloud存储"],category:"网盘",icon:"☁️",steps:["iPhone：打开「设置」→ 点击顶部你的名字(Apple ID)","点击「iCloud」→「管理账户存储空间」","点击「更改存储方案」→「降级选项」","选择「免费5GB」或其他更低档位 → 完成"],tip:"降级后当前周期仍有效。降级前确保iCloud内容已备份。家庭共享由组织者管理。",difficulty:"⭐⭐",time:"约1分钟"},
-  {name:"京东PLUS",aliases:["京东","京东会员","jd plus"],category:"购物",icon:"🛒",steps:["打开京东App → 点击底部「我的」","点击「PLUS会员」","点击右上角「···」或「设置」","点击「自动续费管理」","点击「关闭自动续费」→ 确认"],tip:"京东PLUS常和腾讯视频/爱奇艺联名。如果只为一个开的，退掉换联名卡更划算。",difficulty:"⭐⭐",time:"约1分钟"}
-];
+const I18N = {
+  zh: {
+    langBtn: 'English',
+    heroTag: '三合一订阅管理工具包',
+    heroTitle: '查教程 · 算账单<br>管到期',
+    heroSub: '免费、无需注册、数据只保存在你的设备上',
+    hb1:'查教程',hs1:'取消步骤',hb2:'算账单',hs2:'月度/年度',hb3:'管到期',hs3:'邮件提醒',
+    dl1:'查教程',dl2:'算账单',dl3:'管到期',
+    s1title:'查取消教程',s1sub:'输入平台名称，查看详细的取消订阅步骤。已收录 15 个平台。',
+    s2title:'算订阅账单',s2sub:'输入你的订阅，自动计算月度/年度/5年总支出。加总数字会让你做出更理性的决定。',
+    s3title:'管到期提醒',s3sub:'设置到期提醒，系统在到期前3天自动发送邮件。免费额度：每月3次。',
+    searchPlaceholder:'输入平台名称…',searchBtn:'查询',
+    quotaLabel:'本月剩余',
+    remindNamePlaceholder:'订阅名称',
+    remindDateLabel:'到期日期',
+    remindEmailPlaceholder:'邮箱地址',
+    remindBtn:'🔔 设置提醒',
+    noResult:'未找到「{q}」的取消教程。试试搜索其他平台名称。',
+    stepsLabel:'取消步骤',
+    emptyReminders:'还没有设置提醒',
+    emptyRemindersSub:'添加你的订阅到期日，到期前我们会在3天前发邮件提醒你。',
+    footer:'数据仅保存在你的浏览器中',
+    cnLabel:'国内',intlLabel:'国际'
+  },
+  en: {
+    langBtn: '中文',
+    heroTag: '3-in-1 Subscription Toolkit',
+    heroTitle: 'Cancel · Calculate<br>Manage',
+    heroSub: 'Free. No sign-up. Your data stays on your device.',
+    hb1:'Cancel',hs1:'Guides',hb2:'Calculate',hs2:'Monthly/Yearly',hb3:'Manage',hs3:'Alerts',
+    dl1:'Cancel',dl2:'Calculate',dl3:'Manage',
+    s1title:'Cancel Subscription Guides',s1sub:'Search for a platform and get step-by-step cancellation instructions. 15 platforms supported.',
+    s2title:'Subscription Calculator',s2sub:'Add your subscriptions to see monthly, yearly, and 5-year totals. Seeing the full number changes everything.',
+    s3title:'Renewal Alerts',s3sub:'Set a reminder and we\'ll email you 3 days before renewal. Free tier: 3 alerts per month.',
+    searchPlaceholder:'Search a platform…',searchBtn:'Search',
+    quotaLabel:'Remaining this month',
+    remindNamePlaceholder:'Subscription name',
+    remindDateLabel:'Expiry date',
+    remindEmailPlaceholder:'Email address',
+    remindBtn:'🔔 Set Reminder',
+    noResult:'No cancellation guide found for "{q}". Try another platform name.',
+    stepsLabel:'Steps',
+    emptyReminders:'No reminders set',
+    emptyRemindersSub:'Add a subscription with its expiry date, and we\'ll email you 3 days before it renews.',
+    footer:'Your data stays on your device',
+    cnLabel:'CN',intlLabel:'Global'
+  }
+};
 
-// ============================================================
-// Tab 切换
-// ============================================================
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach((t,i) => {
-    const names = ['search','calc','remind'];
-    t.classList.toggle('active', names[i] === name);
-  });
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-' + name).classList.add('active');
-  if (name === 'remind') renderReminders();
+let lang = localStorage.getItem('subradar_lang');
+if (!lang) {
+  lang = (navigator.language || '').startsWith('zh') ? 'zh' : 'en';
+  localStorage.setItem('subradar_lang', lang);
+}
+
+function t(key) { return I18N[lang][key] || key; }
+
+function toggleLang() {
+  lang = lang === 'zh' ? 'en' : 'zh';
+  localStorage.setItem('subradar_lang', lang);
+  applyLang();
+  renderChips();
+  if (document.getElementById('resultCard').classList.contains('show')) {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) doSearch();
+  }
+}
+
+function applyLang() {
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.getElementById('langBtn').textContent = t('langBtn');
+  document.getElementById('heroTag').textContent = t('heroTag');
+  document.getElementById('heroTitle').innerHTML = t('heroTitle');
+  document.getElementById('heroSub').textContent = t('heroSub');
+  document.getElementById('hb1').textContent = t('hb1');
+  document.getElementById('hs1').textContent = t('hs1');
+  document.getElementById('hb2').textContent = t('hb2');
+  document.getElementById('hs2').textContent = t('hs2');
+  document.getElementById('hb3').textContent = t('hb3');
+  document.getElementById('hs3').textContent = t('hs3');
+  document.getElementById('dl1').textContent = t('dl1');
+  document.getElementById('dl2').textContent = t('dl2');
+  document.getElementById('dl3').textContent = t('dl3');
+  document.getElementById('s1title').textContent = t('s1title');
+  document.getElementById('s1sub').textContent = t('s1sub');
+  document.getElementById('s2title').textContent = t('s2title');
+  document.getElementById('s2sub').textContent = t('s2sub');
+  document.getElementById('s3title').textContent = t('s3title');
+  document.getElementById('s3sub').textContent = t('s3sub');
+  document.getElementById('searchInput').placeholder = t('searchPlaceholder');
+  document.getElementById('searchBtn').textContent = t('searchBtn');
+  document.getElementById('quotaLabel').textContent = t('quotaLabel');
+  document.getElementById('remindName').placeholder = t('remindNamePlaceholder');
+  document.getElementById('remindEmail').placeholder = t('remindEmailPlaceholder');
+  document.getElementById('remindBtn').textContent = t('remindBtn');
+  document.title = lang === 'zh' ? '订阅雷达 · SubRadar' : 'SubRadar · Subscription Toolkit';
+  renderReminders();
 }
 
 // ============================================================
-// 查 — 搜索
+// Platform data (from separate file + inline for reliability)
 // ============================================================
-function initQuickChips() {
+let PLATFORMS = [];
+
+async function loadPlatforms() {
+  try {
+    const resp = await fetch('data/platforms.json');
+    PLATFORMS = await resp.json();
+  } catch(e) { /* use empty, will show no results */ }
+  renderChips();
+}
+
+// ============================================================
+// Quick chips
+// ============================================================
+function renderChips() {
   const container = document.getElementById('quickChips');
-  const popular = ['微信支付','支付宝','爱奇艺','B站','iCloud+','百度网盘','网易云音乐','QQ音乐','腾讯视频','京东PLUS'];
-  container.innerHTML = popular.map(p => `<button class="chip" onclick="searchPlatform('${p}')">${p}</button>`).join('');
+  const cn = PLATFORMS.filter(p => p.region === 'cn').slice(0, 8);
+  const intl = PLATFORMS.filter(p => p.region === 'intl');
+  const chips = [...cn, ...intl];
+  container.innerHTML = chips.map(p => {
+    const cls = p.region === 'intl' ? 'chip intl' : 'chip';
+    return `<button class="${cls}" onclick="searchPlatform('${p.aliases ? p.aliases[0] : p.name}')">${p.icon} ${p.name}</button>`;
+  }).join('');
 }
-initQuickChips();
 
-function searchPlatform(query) {
-  document.getElementById('searchInput').value = query;
+function searchPlatform(q) {
+  document.getElementById('searchInput').value = q;
   doSearch();
 }
 
+// ============================================================
+// Search
+// ============================================================
 function doSearch() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   const card = document.getElementById('resultCard');
   if (!q) { card.classList.remove('show'); return; }
 
-  // 精确匹配 + 别名匹配 + 模糊匹配
   let match = null;
   for (const p of PLATFORMS) {
-    if (p.name.toLowerCase().includes(q) || p.name.toLowerCase() === q) { match = p; break; }
-    for (const a of p.aliases) {
-      if (a.toLowerCase().includes(q) || a.toLowerCase() === q) { match = p; break; }
+    if (p.name.toLowerCase() === q) { match = p; break; }
+    if (p.aliases) {
+      for (const a of p.aliases) {
+        if (a.toLowerCase() === q || a.toLowerCase().includes(q)) { match = p; break; }
+      }
     }
     if (match) break;
   }
-  // 模糊匹配
   if (!match) {
     for (const p of PLATFORMS) {
-      if (p.name.toLowerCase().split('').filter(c => q.includes(c)).length >= Math.min(q.length, 3)) { match = p; break; }
+      if (p.name.toLowerCase().includes(q)) { match = p; break; }
     }
   }
 
   if (!match) {
     card.classList.add('show');
-    card.innerHTML = `<div style="text-align:center;padding:20px;color:var(--ts);">
-      <div style="font-size:40px;margin-bottom:8px;">🤔</div>
-      <p>未找到「${q}」的取消教程</p>
-      <p style="font-size:13px;">试试搜索：微信支付、支付宝、爱奇艺、B站…</p>
-      <p style="font-size:12px;margin-top:8px;">没找到你需要的平台？发邮件到 feedback@subradar.dev 告诉我们。</p>
-    </div>`;
+    card.innerHTML = `<div class="no-result"><div style="font-size:40px;margin-bottom:10px;">🤔</div><p>${t('noResult').replace('{q}', q)}</p></div>`;
     return;
   }
 
-  document.getElementById('platIcon').textContent = match.icon;
-  document.getElementById('platName').textContent = match.name;
-  document.getElementById('platMeta').textContent = `${match.category} · 难度 ${match.difficulty} · 耗时 ${match.time}`;
-  document.getElementById('platSteps').innerHTML = match.steps.map((s,i) => `<li>${s}</li>`).join('');
-  document.getElementById('platTip').textContent = '💡 ' + match.tip;
+  // Get steps based on language and platform
+  let steps;
+  if (match.region === 'intl') {
+    steps = lang === 'zh' ? (match.steps_zh || match.steps) : match.steps;
+  } else {
+    steps = match.steps;
+  }
+
+  let tip;
+  if (match.region === 'intl') {
+    tip = lang === 'zh' ? (match.tip_zh || match.tip) : match.tip;
+  } else {
+    tip = match.tip;
+  }
+
+  const regionTag = match.region === 'intl'
+    ? `<span class="region-tag intl">${t('intlLabel')}</span>`
+    : `<span class="region-tag cn">${t('cnLabel')}</span>`;
+
   card.classList.add('show');
+  card.innerHTML = `
+    <div class="rhead">
+      <span class="ricon">${match.icon}</span>
+      <div>
+        <div class="rname">${match.name}${regionTag}</div>
+        <div class="rmeta">${match.category}</div>
+      </div>
+    </div>
+    <ol>${steps.map(s => `<li>${s}</li>`).join('')}</ol>
+    <div class="tip">💡 ${tip}</div>`;
 }
 
 // ============================================================
-// 管 — 提醒系统
+// Reminders
 // ============================================================
 const MAX_MONTHLY = 3;
 
@@ -249,17 +407,14 @@ function getReminders() {
   try { return JSON.parse(localStorage.getItem('subradar_reminders') || '[]'); }
   catch(e) { return []; }
 }
-
-function saveReminders(list) {
-  localStorage.setItem('subradar_reminders', JSON.stringify(list));
-}
+function saveReminders(l) { localStorage.setItem('subradar_reminders', JSON.stringify(l)); }
 
 function getMonthlyCount() {
   const now = new Date();
-  const thisMonth = `${now.getFullYear()}-${now.getMonth()}`;
+  const m = `${now.getFullYear()}-${now.getMonth()}`;
   return getReminders().filter(r => {
     const d = new Date(r.createdAt);
-    return `${d.getFullYear()}-${d.getMonth()}` === thisMonth;
+    return `${d.getFullYear()}-${d.getMonth()}` === m;
   }).length;
 }
 
@@ -267,79 +422,35 @@ function addReminder() {
   const name = document.getElementById('remindName').value.trim();
   const date = document.getElementById('remindDate').value;
   const email = document.getElementById('remindEmail').value.trim();
-
-  if (!name) { alert('请输入订阅名称'); return; }
-  if (!date) { alert('请选择到期日期'); return; }
-  if (!email) { alert('请输入邮箱地址'); return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('邮箱格式不正确'); return; }
-
-  const selected = new Date(date);
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  if (selected < today) { alert('到期日必须在今天之后'); return; }
+  if (!name) { alert(lang==='zh'?'请输入订阅名称':'Please enter a subscription name'); return; }
+  if (!date) { alert(lang==='zh'?'请选择到期日期':'Please select an expiry date'); return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert(lang==='zh'?'邮箱格式不正确':'Invalid email address'); return; }
+  if (new Date(date) < new Date(new Date().toDateString())) { alert(lang==='zh'?'到期日必须在今天之后':'Expiry date must be in the future'); return; }
 
   const monthly = getMonthlyCount();
   if (monthly >= MAX_MONTHLY) {
-    alert(`本月已使用 ${MAX_MONTHLY}/${MAX_MONTHLY} 次免费提醒。下月自动重置。`);
+    alert(lang==='zh' ? `本月已使用 ${MAX_MONTHLY}/${MAX_MONTHLY} 次免费提醒。` : `You've used ${MAX_MONTHLY}/${MAX_MONTHLY} alerts this month.`);
     return;
   }
 
-  const reminders = getReminders();
-  reminders.push({
-    id: Date.now(),
-    name,
-    expireDate: date,
-    email,
-    createdAt: new Date().toISOString(),
-    notified: false
-  });
-  saveReminders(reminders);
-  renderReminders();
-
-  // Clear form
+  const list = getReminders();
+  list.push({ id: Date.now(), name, expireDate: date, email, createdAt: new Date().toISOString(), notified: false });
+  saveReminders(list);
   document.getElementById('remindName').value = '';
   document.getElementById('remindDate').value = '';
   document.getElementById('remindEmail').value = '';
+  renderReminders();
 
-  // Trigger notification scheduling (client-side for now; server-side via Cloudflare Function when deployed)
-  scheduleNotification(name, date, email);
-}
-
-async function scheduleNotification(name, date, email) {
-  const threeDaysBefore = new Date(date);
-  threeDaysBefore.setDate(threeDaysBefore.getDate() - 3);
-
-  // Try Cloudflare Function first
-  try {
-    const resp = await fetch('/api/send-reminder', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, subName: name, expireDate: date })
-    });
-    const data = await resp.json();
-    if (data.success) {
-      console.log('✅ 提醒已设置:', data.message);
-    }
-  } catch (e) {
-    // Fallback: store locally, show browser notification if available
-    console.log('ℹ️ 提醒已保存到本地。邮件服务将在后台处理。');
-    if ('Notification' in window && Notification.permission === 'granted') {
-      const delay = threeDaysBefore.getTime() - Date.now();
-      if (delay > 0) {
-        setTimeout(() => {
-          new Notification(`⏰ ${name} 即将到期`, {
-            body: `你的 ${name} 将于 ${date} 到期。建议检查是否需要取消自动续费。`,
-            icon: '/favicon.ico'
-          });
-        }, Math.min(delay, 2147483647)); // 限制最大延时
-      }
-    }
-  }
+  // Try server-side email scheduling
+  fetch('/api/send-reminder', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, subName: name, expireDate: date })
+  }).catch(() => {});
 }
 
 function deleteReminder(id) {
-  const reminders = getReminders().filter(r => r.id !== id);
-  saveReminders(reminders);
+  saveReminders(getReminders().filter(r => r.id !== id));
   renderReminders();
 }
 
@@ -349,61 +460,39 @@ function renderReminders() {
   const monthly = getMonthlyCount();
   const remaining = MAX_MONTHLY - monthly;
 
-  // Quota dots
   document.getElementById('quotaDots').innerHTML = Array.from({length: MAX_MONTHLY}, (_, i) =>
-    `<span class="dot${i < monthly ? ' used' : ''}"></span>`
+    `<span class="quota-dot${i < monthly ? ' used' : ''}"></span>`
   ).join('');
-  document.getElementById('quotaText').textContent = `${remaining}/${MAX_MONTHLY} 次剩余`;
+  document.getElementById('quotaText').textContent = `${remaining}/${MAX_MONTHLY}`;
   document.getElementById('remindBtn').disabled = remaining <= 0;
 
   if (reminders.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="big-emoji">📭</div><p>还没有设置提醒</p><p style="font-size:13px;">添加你的订阅到期日，到期前3天我们会发邮件提醒你。</p></div>`;
+    list.innerHTML = `<div class="empty"><div class="eicon">📭</div><p>${t('emptyReminders')}</p><p style="font-size:13px;color:var(--ts);">${t('emptyRemindersSub')}</p></div>`;
     return;
   }
 
-  // Sort by expire date
   reminders.sort((a,b) => new Date(a.expireDate) - new Date(b.expireDate));
-
   list.innerHTML = reminders.map(r => {
-    const expireDate = new Date(r.expireDate);
-    const today = new Date(); today.setHours(0,0,0,0);
-    const daysLeft = Math.ceil((expireDate - today) / (1000*60*60*24));
-    let statusText = '';
-    if (daysLeft < 0) statusText = '（已过期）';
-    else if (daysLeft === 0) statusText = '（今天到期！）';
-    else if (daysLeft <= 3) statusText = `（仅剩${daysLeft}天！）`;
-    else statusText = `（${daysLeft}天后到期）`;
-
-    return `
-      <li class="reminder-item">
-        <div class="rinfo">
-          <div class="rname">${escapeHtml(r.name)} <span style="font-size:12px;color:${daysLeft<=3?'var(--r)':'var(--ts)'}">${statusText}</span></div>
-          <div class="rdate">📅 ${r.expireDate} · 📧 ${escapeHtml(r.email)}</div>
-        </div>
-        <button class="rdelete" onclick="deleteReminder(${r.id})" title="删除">×</button>
-      </li>`;
+    const exp = new Date(r.expireDate);
+    const now = new Date(); now.setHours(0,0,0,0);
+    const days = Math.ceil((exp - now) / 86400000);
+    let badge = '';
+    if (days < 0) badge = lang==='zh'?'已过期':'Expired';
+    else if (days === 0) badge = lang==='zh'?'今天到期！':'Due today!';
+    else if (days <= 3) badge = (lang==='zh'?'仅剩':'Only ')+days+(lang==='zh'?'天！':'d!');
+    else badge = days + (lang==='zh'?'天后':'d left');
+    return `<li class="reminder-item"><div class="ri"><div class="rn">${esc(r.name)} <span style="font-size:12px;color:${days<=3?'var(--r)':'var(--ts)'}">${badge}</span></div><div class="rd">📅 ${r.expireDate} · ${esc(r.email)}</div></div><button class="rx" onclick="deleteReminder(${r.id})">×</button></li>`;
   }).join('');
 }
 
-function escapeHtml(s) {
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
+function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
 // ============================================================
-// 初始化
+// Init
 // ============================================================
+applyLang();
+loadPlatforms();
 renderReminders();
-
-// Request notification permission
-if ('Notification' in window && Notification.permission === 'default') {
-  // Don't request on load; wait for user interaction
-  document.addEventListener('click', function askOnce() {
-    Notification.requestPermission();
-    document.removeEventListener('click', askOnce);
-  }, { once: true });
-}
 </script>
 </body>
 </html>
