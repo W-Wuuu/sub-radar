@@ -3,302 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>订阅雷达 · 你的AI订阅侦探</title>
-<meta name="description" content="输入你的订阅，AI告诉你一年浪费了多少钱。免费工具，无需注册。">
+<title>订阅雷达 · SubRadar</title>
+<meta name="description" content="免费订阅计算器。Free subscription calculator.">
 <style>
-:root {
-  --primary: #6C5CE7;
-  --danger: #E17055;
-  --success: #00B894;
-  --bg: #F8F9FA;
-  --card: #FFFFFF;
-  --text: #2D3436;
-  --text-secondary: #636E72;
-  --border: #DFE6E9;
-  --shadow: 0 2px 16px rgba(0,0,0,0.06);
-}
+:root { --blue: #007AFF; --r: #FF3B30; --g: #34C759; --bg: #F2F2F7; --c: #FFF; --t: #1D1D1F; --ts: #86868B; --b: #D1D1D6; --radius: 14px; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--t); line-height: 1.5; -webkit-font-smoothing: antialiased; padding-bottom: 40px; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+.hero { background: linear-gradient(160deg, #007AFF, #5856D6); color: white; padding: 36px 20px 44px; text-align: center; }
+.hero .badge { display:inline-block; background:rgba(255,255,255,0.18); padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; margin-bottom:12px; letter-spacing:0.5px; }
+.hero h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+.hero .sub { font-size: 15px; opacity:0.85; margin-top:4px; }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  padding-bottom: 100px;
-}
-
-/* Hero */
-.hero {
-  background: linear-gradient(135deg, #6C5CE7 0%, #A855F7 50%, #E879F9 100%);
-  color: white;
-  padding: 40px 20px 50px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: -30px;
-  left: 0; right: 0;
-  height: 60px;
-  background: var(--bg);
-  border-radius: 50% 50% 0 0;
-}
-.hero h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
-.hero .subtitle { font-size: 15px; opacity: 0.9; font-weight: 400; }
-.hero .badge {
-  display: inline-block;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(10px);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  margin-bottom: 16px;
-}
-
-/* Container */
 .container { max-width: 500px; margin: 0 auto; padding: 0 16px; }
 
-/* Intro card */
-.intro-card {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 24px;
-  margin-top: -20px;
-  position: relative;
-  z-index: 1;
-  box-shadow: var(--shadow);
-  margin-bottom: 20px;
-}
-.intro-card .icon-row { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
-.intro-card .icon-row .emoji { font-size: 32px; }
-.intro-card h3 { font-size: 18px; margin-bottom: 4px; }
-.intro-card p { font-size: 14px; color: var(--text-secondary); }
+.intro { background: var(--c); border-radius: var(--radius); padding: 22px; margin-top: -16px; position:relative; z-index:1; box-shadow: 0 1px 8px rgba(0,0,0,0.04); margin-bottom: 18px; display:flex; gap:12px; align-items:center; }
+.intro .emoji { font-size: 30px; }
+.intro h3 { font-size: 17px; font-weight: 700; }
+.intro p { font-size: 13px; color: var(--ts); }
 
-/* Form */
-.section-title {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 24px 0 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.subscription-form {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: var(--shadow);
-  margin-bottom: 16px;
-}
-
-.form-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-  align-items: center;
-}
-.form-row:last-child { margin-bottom: 0; }
-
-input, select {
-  flex: 1;
-  padding: 12px 14px;
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  font-size: 15px;
-  font-family: inherit;
-  transition: border-color 0.2s;
-  background: var(--bg);
-  min-width: 0;
-}
-input:focus, select:focus {
-  outline: none;
-  border-color: var(--primary);
-  background: white;
-}
-input::placeholder { color: #B2BEC3; }
-
-.btn {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-.btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: #5A4BD1; transform: translateY(-1px); }
-.btn-primary:active { transform: scale(0.98); }
-.btn-outline { background: white; color: var(--primary); border: 2px solid var(--primary); }
-.btn-danger { background: white; color: var(--danger); border: 2px solid var(--danger); }
-.btn-block { width: 100%; margin-top: 12px; }
-
-/* Subscription list */
-.sub-list { list-style: none; }
-.sub-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px;
-  background: var(--card);
-  border-radius: 12px;
-  margin-bottom: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-  gap: 10px;
-}
-.sub-item .info { flex: 1; min-width: 0; }
-.sub-item .name { font-weight: 600; font-size: 14px; }
-.sub-item .detail { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-.sub-item .amount { font-weight: 700; font-size: 16px; color: var(--primary); white-space: nowrap; }
-.sub-item .del-btn {
-  width: 32px; height: 32px;
-  border-radius: 8px;
-  border: none;
-  background: #FFEAA7;
-  color: var(--danger);
-  font-size: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Results */
-.results {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: var(--shadow);
-  margin-top: 20px;
-  display: none;
-}
-.results.visible { display: block; animation: slideUp 0.4s ease; }
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-.result-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-}
-.result-row:last-child { border-bottom: none; }
-.result-row .label { font-size: 14px; color: var(--text-secondary); }
-.result-row .value { font-size: 18px; font-weight: 700; }
-.result-row .value.big { font-size: 28px; color: var(--primary); }
-.result-row .value.danger { color: var(--danger); }
-
-.waste-warning {
-  background: #FFF3E0;
-  border-radius: 12px;
-  padding: 16px;
-  margin-top: 16px;
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-.waste-warning .warn-icon { font-size: 24px; flex-shrink: 0; }
-.waste-warning .warn-text { font-size: 13px; color: #E65100; line-height: 1.5; }
-
-/* Share section */
-.share-section { margin-top: 20px; }
-.share-section h4 { font-size: 14px; margin-bottom: 10px; color: var(--text-secondary); }
-.share-btns { display: flex; gap: 8px; }
-.share-btn {
-  flex: 1; padding: 10px; border-radius: 10px;
-  border: none; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center;
-}
-.share-btn.wechat { background: #07C160; color: white; }
-.share-btn.xiaohongshu { background: #FE2C55; color: white; }
-.share-btn.copy { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
-
-/* Pre-register */
-.pre-register {
-  background: linear-gradient(135deg, #6C5CE7, #A855F7);
-  color: white;
-  border-radius: 16px;
-  padding: 24px;
-  margin-top: 24px;
-  text-align: center;
-}
-.pre-register h3 { font-size: 18px; margin-bottom: 6px; }
-.pre-register p { font-size: 13px; opacity: 0.85; margin-bottom: 16px; }
-.pre-register .email-row { display: flex; gap: 8px; }
-.pre-register input {
-  flex: 1; padding: 12px 14px; border-radius: 12px;
-  border: none; font-size: 15px;
-}
-.pre-register .btn-white {
-  padding: 12px 24px; border-radius: 12px;
-  border: none; background: white; color: var(--primary);
-  font-weight: 700; font-size: 15px; cursor: pointer;
-}
-
-/* Presets */
-.presets { margin-bottom: 16px; }
+.section-title { font-size: 15px; font-weight: 700; margin: 20px 0 10px; }
+.presets { margin-bottom: 14px; }
 .preset-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.preset-chip {
-  padding: 6px 14px; background: white; border: 1.5px solid var(--border);
-  border-radius: 20px; font-size: 12px; cursor: pointer;
-  transition: all 0.2s;
-}
-.preset-chip:hover { border-color: var(--primary); color: var(--primary); }
-.preset-chip.used { background: #EDE7F6; border-color: var(--primary); color: var(--primary); }
+.preset-chip { padding: 7px 14px; background: var(--c); border: 1px solid var(--b); border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.15s; font-family: inherit; color: var(--t); }
+.preset-chip:hover { border-color: var(--blue); color: var(--blue); background: #F0F5FF; }
+.preset-chip.used { background: #E8F2FF; border-color: var(--blue); color: var(--blue); opacity:0.6; pointer-events:none; }
 
-.footer { text-align: center; margin-top: 32px; color: var(--text-secondary); font-size: 12px; }
-.footer a { color: var(--primary); text-decoration: none; }
+.form-card { background: var(--c); border-radius: var(--radius); padding: 18px; box-shadow: 0 1px 8px rgba(0,0,0,0.04); margin-bottom: 14px; }
+.form-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
+.form-row:last-child { margin-bottom: 0; }
+input, select { flex:1; padding: 11px 14px; border: 1.5px solid var(--b); border-radius: 10px; font-size: 15px; font-family: inherit; background: #F9F9FB; transition: all 0.15s; min-width:0; }
+input:focus, select:focus { outline: none; border-color: var(--blue); background: white; box-shadow: 0 0 0 3px rgba(0,122,255,0.08); }
+input::placeholder { color: #B0B0B8; }
+.btn { padding: 11px 20px; border:none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor:pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+.btn-blue { background: var(--blue); color: white; }
+.btn-blue:hover { background: #0066D6; }
+.btn-blue:active { transform: scale(0.98); }
+.btn-block { width:100%; margin-top: 10px; }
+
+.sub-item { display:flex; align-items:center; justify-content:space-between; padding: 13px 16px; background: var(--c); border-radius: 10px; margin-bottom: 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.03); gap: 10px; }
+.sub-item .info { flex:1; min-width:0; }
+.sub-item .name { font-weight: 600; font-size: 14px; }
+.sub-item .detail { font-size: 12px; color: var(--ts); margin-top:1px; }
+.sub-item .amount { font-weight: 700; font-size: 16px; color: var(--blue); white-space: nowrap; }
+.sub-item .del { width: 30px; height: 30px; border-radius: 50%; border: none; background: #FFE5E5; color: var(--r); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.sub-item .del:hover { background: var(--r); color: white; }
+
+.results { background: var(--c); border-radius: var(--radius); padding: 22px; box-shadow: 0 1px 8px rgba(0,0,0,0.04); margin-top: 18px; display: none; }
+.results.show { display: block; animation: up 0.35s ease; }
+@keyframes up { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+.result-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 0.5px solid var(--b); }
+.result-row:last-child { border-bottom: none; }
+.result-row .rl { font-size: 14px; color: var(--ts); }
+.result-row .rv { font-size: 18px; font-weight: 700; }
+.result-row .rv.big { font-size: 28px; color: var(--blue); }
+.result-row .rv.warn { color: var(--r); }
+
+.waste { background: #FFF3E0; border-radius: 10px; padding: 14px 16px; margin-top: 14px; display: flex; gap: 10px; align-items: flex-start; }
+.waste .wi { font-size: 22px; flex-shrink:0; }
+.waste .wt { font-size: 13px; color: #B45309; line-height: 1.5; }
+
+.share { margin-top: 16px; }
+.share h4 { font-size: 13px; color: var(--ts); margin-bottom: 8px; }
+.share-btns { display: flex; gap: 8px; }
+.share-btn { flex:1; padding: 10px; border-radius: 10px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; font-family: inherit; }
+.share-btn.copy { background: #F2F2F7; color: var(--t); }
+.share-btn.wechat { background: #07C160; color: white; }
+
+.empty { text-align: center; color: var(--ts); padding: 24px; }
+
+footer { text-align: center; padding: 20px; color: var(--ts); font-size: 12px; margin-top: 16px; }
+footer a { color: var(--blue); text-decoration: none; }
 </style>
 </head>
 <body>
 
-<!-- Hero -->
 <div class="hero">
-  <div class="badge">🕵️ AI订阅侦探</div>
-  <h1>订阅雷达</h1>
-  <p class="subtitle">你被偷偷扣了多少钱？</p>
+  <div class="badge" id="badge">订阅计算器</div>
+  <h1 id="heroTitle">你每月花了多少？</h1>
+  <p class="sub" id="heroSub">数据只保存在你的浏览器中</p>
 </div>
 
 <div class="container">
-  <!-- Intro -->
-  <div class="intro-card">
-    <div class="icon-row">
-      <span class="emoji">💸</span>
-      <div>
-        <h3>普通年轻人年损¥1,500+</h3>
-        <p>在遗忘的自动续费上。算算你的。</p>
-      </div>
+  <div class="intro">
+    <span class="emoji">💸</span>
+    <div>
+      <h3 id="introTitle">平均每年浪费 ¥1,500+</h3>
+      <p id="introSub">在遗忘的自动续费上。来算算你的。</p>
     </div>
   </div>
 
-  <!-- Quick Presets -->
   <div class="presets">
-    <div class="section-title">⚡ 快速添加常见订阅</div>
+    <div class="section-title" id="presetTitle">⚡ 快速添加常见订阅</div>
     <div class="preset-chips" id="presetChips"></div>
   </div>
 
-  <!-- Manual Add Form -->
-  <div class="subscription-form">
-    <div class="section-title" style="margin-top:0">➕ 手动添加</div>
+  <div class="form-card">
+    <div class="section-title" style="margin-top:0" id="formTitle">➕ 手动添加</div>
     <div class="form-row">
-      <input type="text" id="subName" placeholder="订阅名称（如：腾讯视频VIP）" maxlength="30">
+      <input type="text" id="subName" placeholder="订阅名称" maxlength="30">
     </div>
     <div class="form-row">
-      <input type="number" id="subAmount" placeholder="金额（元）" min="0" step="0.01">
+      <input type="number" id="subAmount" placeholder="金额" min="0" step="0.01">
       <select id="subPeriod" style="flex:0.6">
-        <option value="monthly">月付</option>
-        <option value="yearly">年付</option>
-        <option value="quarterly">季付</option>
+        <option value="monthly" id="optMonthly">月付</option>
+        <option value="yearly" id="optYearly">年付</option>
+        <option value="quarterly" id="optQuarterly">季付</option>
       </select>
     </div>
     <div class="form-row">
       <select id="subCategory">
-        <option value="">分类（可选）</option>
+        <option value="" id="catNone">分类（可选）</option>
         <option value="视频">📺 视频</option>
         <option value="音乐">🎵 音乐</option>
         <option value="网盘">☁️ 网盘</option>
@@ -306,251 +121,228 @@ input::placeholder { color: #B2BEC3; }
         <option value="工具">🔧 工具</option>
         <option value="健身">💪 健身</option>
         <option value="知识付费">🎓 知识付费</option>
-        <option value="购物">🛒 购物会员</option>
+        <option value="购物">🛒 购物</option>
         <option value="其他">📦 其他</option>
       </select>
     </div>
-    <button class="btn btn-primary btn-block" onclick="addSubscription()">+ 添加订阅</button>
+    <button class="btn btn-blue btn-block" onclick="addSubscription()" id="addBtn">+ 添加订阅</button>
   </div>
 
-  <!-- Subscription List -->
   <div id="subscriptionList"></div>
 
-  <!-- Results -->
   <div class="results" id="results">
-    <div class="section-title" style="margin-top:0">📊 你的订阅报告</div>
-    <div class="result-row">
-      <span class="label">活跃订阅数</span>
-      <span class="value" id="resCount">0</span>
+    <div class="section-title" style="margin-top:0" id="reportTitle">📊 你的订阅报告</div>
+    <div class="result-row"><span class="rl" id="rlCount">活跃订阅数</span><span class="rv" id="resCount">0</span></div>
+    <div class="result-row"><span class="rl" id="rlMonthly">月度支出</span><span class="rv big" id="resMonthly">¥0</span></div>
+    <div class="result-row"><span class="rl" id="rlYearly">年度支出</span><span class="rv" id="resYearly">¥0</span></div>
+    <div class="result-row"><span class="rl" id="rlFive">5年累计</span><span class="rv warn" id="resFiveYear">¥0</span></div>
+    <div class="waste" id="wasteWarning" style="display:none">
+      <span class="wi">⚠️</span><span class="wt" id="wasteText"></span>
     </div>
-    <div class="result-row">
-      <span class="label">月度支出</span>
-      <span class="value big" id="resMonthly">¥0</span>
-    </div>
-    <div class="result-row">
-      <span class="label">年度支出</span>
-      <span class="value" id="resYearly">¥0</span>
-    </div>
-    <div class="result-row">
-      <span class="label">5年累计</span>
-      <span class="value danger" id="resFiveYear">¥0</span>
-    </div>
-    <div class="waste-warning" id="wasteWarning" style="display:none">
-      <span class="warn-icon">⚠️</span>
-      <span class="warn-text" id="wasteText"></span>
-    </div>
-
-    <!-- Share -->
-    <div class="share-section">
-      <h4>📤 分享你的报告（数据仅保存在你的设备上）</h4>
+    <div class="share">
+      <h4 id="shareTitle">📤 分享你的报告</h4>
       <div class="share-btns">
-        <button class="share-btn copy" onclick="copyReport()">📋 复制文字</button>
-        <button class="share-btn wechat" onclick="shareWechat()">💬 微信分享</button>
+        <button class="share-btn copy" onclick="copyReport()" id="shareCopy">📋 复制文字</button>
+        <button class="share-btn wechat" onclick="shareWechat()" id="shareWx">💬 微信分享</button>
       </div>
     </div>
   </div>
 
-  <!-- Pre-register -->
-  <div class="pre-register" id="preregister" style="display:none">
-    <h3>🚀 内测体验官招募中</h3>
-    <p>AI自动扫描你的支付记录，实时监控所有订阅，提前预警续费。比手动输入强100倍。</p>
-    <div class="email-row">
-      <input type="text" id="preregEmail" placeholder="输入手机号或微信">
-      <button class="btn-white" onclick="preRegister()">抢先体验</button>
-    </div>
-    <p style="font-size:11px;margin-top:10px;opacity:0.7">我们承诺：数据仅用于上线通知，绝不泄露。</p>
-  </div>
-
-  <p class="footer">
-    数据仅保存在你的浏览器中，不会上传服务器。<br>
-    © 2026 <a href="#">订阅雷达 SubRadar</a> · 内测体验官招募中
-  </p>
+  <footer id="footer">数据仅保存在你的浏览器中，不会上传服务器。<br>© 2026 订阅雷达 SubRadar</footer>
 </div>
 
 <script>
+// ============================================================
+// i18n
+// ============================================================
+const params = new URLSearchParams(window.location.search);
+const lang = params.get('lang') === 'en' ? 'en' : 'zh';
+
+const T = {
+  zh: {
+    badge:'订阅计算器', heroTitle:'你每月花了多少？', heroSub:'数据只保存在你的浏览器中',
+    introTitle:'平均每年浪费 ¥1,500+', introSub:'在遗忘的自动续费上。来算算你的。',
+    presetTitle:'⚡ 快速添加常见订阅', formTitle:'➕ 手动添加',
+    subNamePlaceholder:'订阅名称（如：腾讯视频VIP）', amountPlaceholder:'金额（元）',
+    optMonthly:'月付', optYearly:'年付', optQuarterly:'季付',
+    catNone:'分类（可选）',
+    addBtn:'+ 添加订阅', emptyText:'还没有添加订阅。试试上面的快捷按钮 👆',
+    mySubs:'我的订阅', subsUnit:'个',
+    reportTitle:'📊 你的订阅报告',
+    rlCount:'活跃订阅数', rlMonthly:'月度支出', rlYearly:'年度支出', rlFive:'5年累计',
+    wasteText:'估算你有 ¥{m}/月（约 ¥{y}/年）的订阅可能已经不用了但仍被扣费。建议立即检查并取消不必要的自动续费。',
+    shareTitle:'📤 分享你的报告', shareCopy:'📋 复制文字', shareWx:'💬 微信分享',
+    copyReport:'📊 我的订阅审计报告\n━━━━━━━━━━\n📋 活跃订阅：{n}个\n💳 月度支出：¥{m}\n📅 年度支出：¥{y}\n⚠️ 潜在浪费：¥{w}/年\n━━━━━━━━━━\n🔍 你也来测测：https://radar-t.pages.dev\n#订阅雷达 #省钱 #自动续费',
+    copyOk:'✅ 已复制！分享给朋友吧', copyPrompt:'手动复制以下文字：',
+    wxAlert:'📱 请截图当前页面，然后分享到微信朋友圈或群聊。\n\n配文建议："算了才知道，我一年在订阅上花了这么多……你也测测？"',
+    alertName:'请输入订阅名称', alertAmount:'请输入有效金额',
+    periodMonthly:'每月', periodYearly:'每年', periodQuarterly:'每季',
+    footer:'数据仅保存在你的浏览器中，不会上传服务器。<br>© 2026 订阅雷达 SubRadar'
+  },
+  en: {
+    badge:'Subscription Calculator', heroTitle:'How much do you spend?', heroSub:'Your data stays on your device',
+    introTitle:'Average person wastes $180+/year', introSub:'On forgotten auto-renewals. Calculate yours.',
+    presetTitle:'⚡ Quick Add', formTitle:'➕ Add Manually',
+    subNamePlaceholder:'Subscription name (e.g. Netflix)', amountPlaceholder:'Amount ($)',
+    optMonthly:'Monthly', optYearly:'Yearly', optQuarterly:'Quarterly',
+    catNone:'Category (optional)',
+    addBtn:'+ Add Subscription', emptyText:'No subscriptions yet. Try the quick add buttons above 👆',
+    mySubs:'My Subscriptions', subsUnit:'',
+    reportTitle:'📊 Your Subscription Report',
+    rlCount:'Active Subscriptions', rlMonthly:'Monthly Spend', rlYearly:'Yearly Spend', rlFive:'5-Year Total',
+    wasteText:'Est. ¥{m}/mo (≈ ¥{y}/yr) may be for subscriptions you no longer use. Consider canceling them.',
+    shareTitle:'📤 Share Your Report', shareCopy:'📋 Copy Text', shareWx:'💬 Share on WeChat',
+    copyReport:'📊 My Subscription Report\n━━━━━━━━━━\n📋 Active: {n}\n💳 Monthly: ¥{m}\n📅 Yearly: ¥{y}\n⚠️ Potential Waste: ¥{w}/yr\n━━━━━━━━━━\n🔍 Try it: https://radar-t.pages.dev\n#SubRadar #SubscriptionManagement',
+    copyOk:'✅ Copied! Share with your friends.', copyPrompt:'Copy manually:',
+    wxAlert:'📱 Screenshot this page and share it on WeChat.\n\nSuggested caption: "I calculated my yearly subscriptions... try it yourself?"',
+    alertName:'Please enter a subscription name', alertAmount:'Please enter a valid amount',
+    periodMonthly:'Monthly', periodYearly:'Yearly', periodQuarterly:'Quarterly',
+    footer:'Your data stays on your device. Nothing is uploaded.<br>© 2026 SubRadar'
+  }
+};
+
+function t(key) { return T[lang][key] || key; }
+
+// Apply i18n
+document.getElementById('badge').textContent = t('badge');
+document.getElementById('heroTitle').textContent = t('heroTitle');
+document.getElementById('heroSub').textContent = t('heroSub');
+document.getElementById('introTitle').textContent = t('introTitle');
+document.getElementById('introSub').textContent = t('introSub');
+document.getElementById('presetTitle').textContent = t('presetTitle');
+document.getElementById('formTitle').textContent = t('formTitle');
+document.getElementById('subName').placeholder = t('subNamePlaceholder');
+document.getElementById('subAmount').placeholder = t('amountPlaceholder');
+document.getElementById('optMonthly').textContent = t('optMonthly');
+document.getElementById('optYearly').textContent = t('optYearly');
+document.getElementById('optQuarterly').textContent = t('optQuarterly');
+document.getElementById('catNone').textContent = t('catNone');
+document.getElementById('addBtn').textContent = t('addBtn');
+document.getElementById('reportTitle').textContent = t('reportTitle');
+document.getElementById('rlCount').textContent = t('rlCount');
+document.getElementById('rlMonthly').textContent = t('rlMonthly');
+document.getElementById('rlYearly').textContent = t('rlYearly');
+document.getElementById('rlFive').textContent = t('rlFive');
+document.getElementById('shareTitle').textContent = t('shareTitle');
+document.getElementById('shareCopy').textContent = t('shareCopy');
+document.getElementById('shareWx').textContent = t('shareWx');
+document.getElementById('footer').innerHTML = t('footer');
+document.title = lang === 'zh' ? '订阅雷达 · 订阅计算器' : 'SubRadar · Subscription Calculator';
+
+// ============================================================
 // State
+// ============================================================
 let subscriptions = JSON.parse(localStorage.getItem('subradar_subs') || '[]');
 
-// Presets
 const presets = [
-  { name: '腾讯视频VIP', amount: 25, period: 'monthly', category: '视频' },
-  { name: '爱奇艺黄金会员', amount: 25, period: 'monthly', category: '视频' },
-  { name: '优酷VIP', amount: 25, period: 'monthly', category: '视频' },
-  { name: 'B站大会员', amount: 25, period: 'monthly', category: '视频' },
-  { name: 'QQ音乐绿钻', amount: 15, period: 'monthly', category: '音乐' },
-  { name: '网易云音乐黑胶', amount: 18, period: 'monthly', category: '音乐' },
-  { name: '百度网盘SVIP', amount: 298, period: 'yearly', category: '网盘' },
-  { name: 'iCloud 50GB', amount: 6, period: 'monthly', category: '网盘' },
-  { name: '微信读书', amount: 19, period: 'monthly', category: '阅读' },
-  { name: '得到APP', amount: 35, period: 'monthly', category: '知识付费' },
-  { name: 'Keep会员', amount: 19, period: 'monthly', category: '健身' },
-  { name: '京东PLUS', amount: 99, period: 'yearly', category: '购物' },
-  { name: '饿了么会员', amount: 10, period: 'monthly', category: '购物' },
+  { name:'腾讯视频VIP',amount:25,period:'monthly',category:'视频' },
+  { name:'爱奇艺黄金会员',amount:25,period:'monthly',category:'视频' },
+  { name:'B站大会员',amount:25,period:'monthly',category:'视频' },
+  { name:'Netflix',amount:15.49,period:'monthly',category:'视频' },
+  { name:'QQ音乐绿钻',amount:15,period:'monthly',category:'音乐' },
+  { name:'网易云音乐黑胶',amount:18,period:'monthly',category:'音乐' },
+  { name:'Spotify Premium',amount:10.99,period:'monthly',category:'音乐' },
+  { name:'百度网盘SVIP',amount:298,period:'yearly',category:'网盘' },
+  { name:'iCloud 50GB',amount:6,period:'monthly',category:'网盘' },
+  { name:'微信读书',amount:19,period:'monthly',category:'阅读' },
+  { name:'Keep会员',amount:19,period:'monthly',category:'健身' },
+  { name:'京东PLUS',amount:99,period:'yearly',category:'购物' },
+  { name:'饿了么会员',amount:10,period:'monthly',category:'购物' },
 ];
 
-// Init preset chips
 function initPresets() {
   const container = document.getElementById('presetChips');
-  const usedNames = new Set(subscriptions.map(s => s.name));
+  const used = new Set(subscriptions.map(s => s.name));
+  container.innerHTML = '';
   presets.forEach(p => {
-    if (!usedNames.has(p.name)) {
+    if (!used.has(p.name)) {
       const chip = document.createElement('span');
       chip.className = 'preset-chip';
-      chip.textContent = `${p.name} ¥${p.amount}/${p.period === 'monthly' ? '月' : '年'}`;
-      chip.onclick = () => {
-        addPreset(p);
-        chip.classList.add('used');
-        chip.onclick = null;
-      };
+      const perLabel = p.period === 'monthly' ? (lang==='zh'?'/月':'/mo') : (lang==='zh'?'/年':'/yr');
+      chip.textContent = `${p.name} ¥${p.amount}${perLabel}`;
+      chip.onclick = () => { addPreset(p); chip.classList.add('used'); chip.onclick = null; };
       container.appendChild(chip);
     }
   });
 }
 
-function addPreset(p) {
-  subscriptions.push({
-    id: Date.now(),
-    name: p.name,
-    amount: p.amount,
-    period: p.period,
-    category: p.category
-  });
-  saveAndRender();
-}
+function addPreset(p) { subscriptions.push({id:Date.now(),name:p.name,amount:p.amount,period:p.period,category:p.category}); saveAndRender(); }
 
 function addSubscription() {
   const name = document.getElementById('subName').value.trim();
   const amount = parseFloat(document.getElementById('subAmount').value);
   const period = document.getElementById('subPeriod').value;
   const category = document.getElementById('subCategory').value;
-
-  if (!name) { alert('请输入订阅名称'); return; }
-  if (!amount || amount <= 0) { alert('请输入有效金额'); return; }
-
-  subscriptions.push({
-    id: Date.now(),
-    name, amount, period, category: category || '其他'
-  });
-
+  if (!name) { alert(t('alertName')); return; }
+  if (!amount || amount <= 0) { alert(t('alertAmount')); return; }
+  subscriptions.push({id:Date.now(),name,amount,period,category:category||(lang==='zh'?'其他':'Other')});
   document.getElementById('subName').value = '';
   document.getElementById('subAmount').value = '';
   saveAndRender();
 }
 
-function deleteSubscription(id) {
-  subscriptions = subscriptions.filter(s => s.id !== id);
-  saveAndRender();
-}
+function deleteSubscription(id) { subscriptions = subscriptions.filter(s => s.id !== id); saveAndRender(); }
 
-function getMonthlyAmount(sub) {
-  switch (sub.period) {
-    case 'yearly': return sub.amount / 12;
-    case 'quarterly': return sub.amount / 3;
-    default: return sub.amount;
-  }
+function getMonthly(s) {
+  switch(s.period) { case 'yearly': return s.amount/12; case 'quarterly': return s.amount/3; default: return s.amount; }
 }
 
 function calculateWaste() {
-  // Estimate waste: 30% of subscriptions are "likely forgotten" based on typical consumer behavior
-  const totalMonthly = subscriptions.reduce((sum, s) => sum + getMonthlyAmount(s), 0);
-  const wasteMonthly = totalMonthly * 0.3;
-  return { totalMonthly, wasteMonthly };
+  const tm = subscriptions.reduce((sum,s) => sum + getMonthly(s), 0);
+  return { totalMonthly: tm, wasteMonthly: tm * 0.3 };
 }
 
-function saveAndRender() {
-  localStorage.setItem('subradar_subs', JSON.stringify(subscriptions));
-  renderAll();
-}
+function saveAndRender() { localStorage.setItem('subradar_subs', JSON.stringify(subscriptions)); renderAll(); }
 
-function renderAll() {
-  renderList();
-  renderResults();
-  initPresets();
-  // Show pre-register after user has added 3+ subscriptions
-  document.getElementById('preregister').style.display = subscriptions.length >= 3 ? 'block' : 'none';
-}
+function renderAll() { renderList(); renderResults(); initPresets(); }
 
 function renderList() {
   const container = document.getElementById('subscriptionList');
   if (subscriptions.length === 0) {
-    container.innerHTML = '<p style="text-align:center;color:#B2BEC3;padding:20px;">还没有添加订阅。试试上面的快捷按钮 👆</p>';
-    document.getElementById('results').classList.remove('visible');
-    document.getElementById('preregister').style.display = 'none';
+    container.innerHTML = `<div class="empty">${t('emptyText')}</div>`;
+    document.getElementById('results').classList.remove('show');
     return;
   }
-  container.innerHTML = '<div class="section-title">📋 我的订阅（' + subscriptions.length + '个）</div><ul class="sub-list">' +
-    subscriptions.map(s => `
-      <li class="sub-item">
-        <div class="info">
-          <div class="name">${s.category ? '[' + s.category + '] ' : ''}${escapeHtml(s.name)}</div>
-          <div class="detail">${periodLabel(s.period)} · 月均 ¥${getMonthlyAmount(s).toFixed(0)}</div>
-        </div>
+  container.innerHTML = `<div class="section-title">📋 ${t('mySubs')}（${subscriptions.length}${t('subsUnit')}）</div>` +
+    subscriptions.map(s => {
+      const catLabel = s.category ? `[${s.category}] ` : '';
+      const perLabel = s.period === 'monthly' ? t('periodMonthly') : s.period === 'yearly' ? t('periodYearly') : t('periodQuarterly');
+      return `<div class="sub-item">
+        <div class="info"><div class="name">${catLabel}${esc(s.name)}</div><div class="detail">${perLabel} · ${lang==='zh'?'月均':'mo. avg'} ¥${getMonthly(s).toFixed(0)}</div></div>
         <div class="amount">¥${s.amount}</div>
-        <button class="del-btn" onclick="deleteSubscription(${s.id})" title="删除">×</button>
-      </li>
-    `).join('') + '</ul>';
+        <button class="del" onclick="deleteSubscription(${s.id})">×</button>
+      </div>`;
+    }).join('');
 }
 
 function renderResults() {
   if (subscriptions.length === 0) return;
-  const resultsDiv = document.getElementById('results');
-  resultsDiv.classList.add('visible');
-
+  const res = document.getElementById('results');
+  res.classList.add('show');
   const { totalMonthly, wasteMonthly } = calculateWaste();
-  const totalYearly = totalMonthly * 12;
-  const fiveYear = totalYearly * 5;
-
+  const ty = totalMonthly * 12;
+  const fy = ty * 5;
   document.getElementById('resCount').textContent = subscriptions.length;
   document.getElementById('resMonthly').textContent = '¥' + totalMonthly.toFixed(0);
-  document.getElementById('resYearly').textContent = '¥' + totalYearly.toFixed(0);
-  document.getElementById('resFiveYear').textContent = '¥' + fiveYear.toFixed(0);
-
-  const wasteDiv = document.getElementById('wasteWarning');
+  document.getElementById('resYearly').textContent = '¥' + ty.toFixed(0);
+  document.getElementById('resFiveYear').textContent = '¥' + fy.toFixed(0);
+  const wd = document.getElementById('wasteWarning');
   if (wasteMonthly > 30) {
-    wasteDiv.style.display = 'flex';
-    document.getElementById('wasteText').textContent =
-      `估算你有 ¥${wasteMonthly.toFixed(0)}/月（约 ¥${(wasteMonthly*12).toFixed(0)}/年）的订阅可能已经不用了但仍被扣费。建议立即检查并取消不必要的自动续费。`;
-  } else {
-    wasteDiv.style.display = 'none';
-  }
+    wd.style.display = 'flex';
+    document.getElementById('wasteText').textContent = t('wasteText').replace('{m}', wasteMonthly.toFixed(0)).replace('{y}', (wasteMonthly*12).toFixed(0));
+  } else { wd.style.display = 'none'; }
 }
 
 function copyReport() {
   const { totalMonthly, wasteMonthly } = calculateWaste();
-  const text = `📊 我的订阅审计报告\n━━━━━━━━━━\n📋 活跃订阅：${subscriptions.length}个\n💳 月度支出：¥${totalMonthly.toFixed(0)}\n📅 年度支出：¥${(totalMonthly*12).toFixed(0)}\n⚠️ 潜在浪费：¥${(wasteMonthly*12).toFixed(0)}/年\n━━━━━━━━━━\n🔍 你也来测测： [链接]\n#订阅雷达 #省钱 #自动续费`;
-  navigator.clipboard.writeText(text).then(() => {
-    alert('✅ 已复制！去小红书/微信/朋友圈粘贴分享吧');
-  }).catch(() => {
-    prompt('手动复制以下文字：', text);
-  });
+  const text = t('copyReport').replace('{n}',subscriptions.length).replace('{m}',totalMonthly.toFixed(0)).replace('{y}',(totalMonthly*12).toFixed(0)).replace('{w}',(wasteMonthly*12).toFixed(0));
+  navigator.clipboard.writeText(text).then(() => alert(t('copyOk'))).catch(() => prompt(t('copyPrompt'), text));
 }
 
-function shareWechat() {
-  alert('📱 请截图当前页面，然后分享到微信朋友圈或群聊。\n\n配文建议："算了才知道，我一年在订阅上花了这么多……你也测测？"');
-}
+function shareWechat() { alert(t('wxAlert')); }
 
-function preRegister() {
-  const contact = document.getElementById('preregEmail').value.trim();
-  if (!contact) { alert('请输入手机号或微信号'); return; }
-  // Store in localStorage for now (will sync to backend when available)
-  const preregs = JSON.parse(localStorage.getItem('subradar_preregs') || '[]');
-  preregs.push({ contact, date: new Date().toISOString(), subCount: subscriptions.length });
-  localStorage.setItem('subradar_preregs', JSON.stringify(preregs));
-  document.getElementById('preregEmail').value = '';
-  document.querySelector('.pre-register').innerHTML = '<h3>🎉 已登记！</h3><p>订阅雷达上线后，我们将第一时间通知你。届时可免费试用AI自动扫描功能。</p>';
-}
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
-function periodLabel(p) {
-  switch(p) { case 'monthly': return '每月'; case 'yearly': return '每年'; case 'quarterly': return '每季'; default: return ''; }
-}
-
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-// Init
 renderAll();
 </script>
 </body>

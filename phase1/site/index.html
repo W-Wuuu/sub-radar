@@ -14,10 +14,18 @@
 body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--t); line-height: 1.5; -webkit-font-smoothing: antialiased; }
 
 /* Nav */
-nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--b); }
+nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: fixed; top: 0; left:0; right:0; z-index: 100; border-bottom: 0.5px solid var(--b); }
 nav .logo { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; color: var(--t); }
 nav .lang-btn { font-size: 14px; font-weight: 600; color: var(--blue); background: none; border: 1.5px solid var(--blue); border-radius: 20px; padding: 6px 16px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
 nav .lang-btn:hover { background: var(--blue); color: white; }
+
+/* Sticky sub-nav */
+.subnav { position: fixed; top: 53px; left: 0; right: 0; z-index: 99; background: rgba(255,255,255,0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--b); display: flex; justify-content: center; gap: 0; padding: 0; transform: translateY(-100%); opacity: 0; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2); pointer-events: none; }
+.subnav.visible { transform: translateY(0); opacity: 1; pointer-events: auto; }
+.subnav a { padding: 12px 24px; font-size: 14px; font-weight: 600; color: var(--ts); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: inherit; }
+.subnav a:hover, .subnav a.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+body { padding-top: 54px; }
 
 /* Section */
 section { max-width: 680px; margin: 0 auto; padding: 48px 20px; }
@@ -126,6 +134,12 @@ footer a { color: var(--blue); text-decoration: none; }
   <button class="lang-btn" onclick="toggleLang()" id="langBtn">English</button>
 </nav>
 
+<div class="subnav" id="subnav">
+  <a href="#search" id="sn1">查教程</a>
+  <a href="#calc" id="sn2">算账单</a>
+  <a href="#remind" id="sn3">管到期</a>
+</div>
+
 <!-- ============ HERO ============ -->
 <div class="hero">
   <div class="tag" id="heroTag">三合一订阅管理工具包</div>
@@ -171,7 +185,7 @@ footer a { color: var(--blue); text-decoration: none; }
     <div class="section-icon green">🖩</div>
     <h2 id="s2title">算订阅账单</h2>
     <p class="card-sub" id="s2sub">输入你的订阅，自动计算月度/年度/5年总支出。加总数字会让你做出更理性的决定。</p>
-    <iframe src="calculator.html" class="calc-frame" title="订阅计算器"></iframe>
+    <iframe src="calculator.html" class="calc-frame" title="订阅计算器" id="calcFrame"></iframe>
   </div>
 </section>
 
@@ -266,6 +280,7 @@ function toggleLang() {
   lang = lang === 'zh' ? 'en' : 'zh';
   localStorage.setItem('subradar_lang', lang);
   applyLang();
+  updateSubnavLabels();
   renderChips();
   if (document.getElementById('resultCard').classList.contains('show')) {
     const q = document.getElementById('searchInput').value.trim();
@@ -488,9 +503,62 @@ function renderReminders() {
 function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
 // ============================================================
+// Sticky subnav — show when scrolled past hero
+// ============================================================
+const subnav = document.getElementById('subnav');
+const hero = document.querySelector('.hero');
+
+function updateSubnav() {
+  const heroBottom = hero.getBoundingClientRect().bottom;
+  if (heroBottom < 0) {
+    subnav.classList.add('visible');
+  } else {
+    subnav.classList.remove('visible');
+  }
+
+  // Highlight active section
+  const sections = [
+    { id: 'search', link: document.getElementById('sn1') },
+    { id: 'calc', link: document.getElementById('sn2') },
+    { id: 'remind', link: document.getElementById('sn3') }
+  ];
+  sections.forEach(s => {
+    const el = document.getElementById(s.id);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      s.link.classList.toggle('active', rect.top <= 200 && rect.bottom > 200);
+    }
+  });
+}
+
+window.addEventListener('scroll', updateSubnav, { passive: true });
+
+// Smooth scroll for subnav links
+document.querySelectorAll('.subnav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      const offset = 110; // nav + subnav height
+      const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+
+// Update subnav labels on lang change
+function updateSubnavLabels() {
+  document.getElementById('sn1').textContent = t('hb1');
+  document.getElementById('sn2').textContent = t('hb2');
+  document.getElementById('sn3').textContent = t('hb3');
+  document.getElementById('calcFrame').src = 'calculator.html?lang=' + lang;
+}
+
+// ============================================================
 // Init
 // ============================================================
 applyLang();
+updateSubnavLabels();
 loadPlatforms();
 renderReminders();
 </script>
