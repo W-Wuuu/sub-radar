@@ -449,19 +449,42 @@ function addReminder() {
   }
 
   const list = getReminders();
-  list.push({ id: Date.now(), name, expireDate: date, email, createdAt: new Date().toISOString(), notified: false });
+  const now = new Date();
+  const exp = new Date(date);
+  const daysUntilExpiry = Math.ceil((exp - now) / 86400000);
+
+  // If expiry is within 3 days, send email NOW (not later)
+  const sendNow = daysUntilExpiry <= 3;
+
+  list.push({ id: Date.now(), name, expireDate: date, email, createdAt: now.toISOString(), notified: sendNow });
   saveReminders(list);
   document.getElementById('remindName').value = '';
   document.getElementById('remindDate').value = '';
   document.getElementById('remindEmail').value = '';
   renderReminders();
 
-  // Try server-side email scheduling
-  fetch('/api/send-reminder', {
+  // Save to server KV (for future cron-based checking)
+  fetch('/api/save-reminder', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, subName: name, expireDate: date })
   }).catch(() => {});
+
+  // If expiry is within 3 days, send the email immediately via Resend
+  if (sendNow) {
+    const urgency = daysUntilExpiry <= 0
+      ? (lang === 'zh' ? '今天到期！' : 'Due today!')
+      : (lang === 'zh' ? `${daysUntilExpiry}天后到期` : `Due in ${daysUntilExpiry} days`);
+    fetch('/api/send-reminder', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, subName: `${name} (${urgency})`, expireDate: date })
+    }).then(r => r.json()).then(data => {
+      if (data.success) {
+        console.log('✅ 提醒邮件已发送至', email);
+      }
+    }).catch(() => {});
+  }
 }
 
 function deleteReminder(id) {
@@ -501,6 +524,61 @@ function renderReminders() {
 }
 
 function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+// ============================================================
+// Client-side reminder checker — runs on page load
+// ============================================================
+async function checkAndSendReminders() {
+  const reminders = getReminders();
+  let updated = false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (const r of reminders) {
+    if (r.notified) continue;
+    const exp = new Date(r.expireDate);
+    exp.setHours(0, 0, 0, 0);
+    const daysUntil = Math.ceil((exp - today) / 86400000);
+
+    // Send if ≤3 days before expiry (and not already past too long)
+    if (daysUntil <= 3 && daysUntil >= -1) {
+      const urgency = daysUntil <= 0
+        ? (lang === 'zh' ? '今天到期！' : 'Due today!')
+        : (lang === 'zh' ? `${daysUntil}天后到期` : `Due in ${daysUntil} days`);
+      try {
+        const resp = await fetch('/api/send-reminder', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: r.email, subName: `${r.name} (${urgency})`, expireDate: r.expireDate })
+        });
+        const data = await resp.json();
+        if (data.success) {
+          r.notified = true;
+          updated = true;
+          console.log('✅ 提醒已发送:', r.email, r.name);
+        }
+      } catch (e) {
+        console.log('⚠️ 提醒发送失败:', r.name, e.message);
+      }
+    }
+  }
+
+  if (updated) {
+    saveReminders(reminders);
+    renderReminders();
+  }
+}
+
+// Also check server-side (KV-based) reminders if available
+async function triggerServerCheck() {
+  try {
+    const resp = await fetch('/api/check-reminders');
+    const data = await resp.json();
+    if (data.status === 'ok') {
+      console.log(`📬 服务端检查完成: ${data.sent} 封已发送, ${data.skipped} 封跳过`);
+    }
+  } catch (e) { /* KV not configured, silently skip */ }
+}
 
 // ============================================================
 // Sticky subnav — show when scrolled past hero
@@ -561,6 +639,8 @@ applyLang();
 updateSubnavLabels();
 loadPlatforms();
 renderReminders();
+checkAndSendReminders();
+triggerServerCheck();
 </script>
 </body>
 </html>

@@ -27,6 +27,18 @@ export async function onRequest(context) {
     });
   }
 
+  // GET: connectivity test
+  if (request.method === 'GET') {
+    return new Response(JSON.stringify({
+      status: 'ok',
+      resendConfigured: !!env.RESEND_API_KEY,
+      message: env.RESEND_API_KEY ? 'Resend API ready' : 'Resend API key not configured — emails will be simulated'
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
+  }
+
   if (request.method !== 'POST') {
     return new Response(JSON.stringify({ error: '请使用POST请求' }), {
       status: 405,
