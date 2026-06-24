@@ -171,10 +171,10 @@ const T = {
     reportTitle:'📊 你的订阅报告',
     rlCount:'活跃订阅数', rlMonthly:'月度支出', rlYearly:'年度支出', rlFive:'5年累计',
     wasteText:'估算你有 ¥{m}/月（约 ¥{y}/年）的订阅可能已经不用了但仍被扣费。建议立即检查并取消不必要的自动续费。',
-    shareTitle:'📤 分享你的报告', shareCopy:'📋 复制文字', shareWx:'💬 微信分享',
+    shareTitle:'📤 分享你的报告', shareCopy:'📋 复制文字', shareWx:'💬 分享给朋友',
     copyReport:'📊 我的订阅审计报告\n━━━━━━━━━━\n📋 活跃订阅：{n}个\n💳 月度支出：¥{m}\n📅 年度支出：¥{y}\n⚠️ 潜在浪费：¥{w}/年\n━━━━━━━━━━\n🔍 你也来测测：https://radar-t.pages.dev\n#订阅雷达 #省钱 #自动续费',
-    copyOk:'✅ 已复制！分享给朋友吧', copyPrompt:'手动复制以下文字：',
-    wxAlert:'📱 请截图当前页面，然后分享到微信朋友圈或群聊。\n\n配文建议："算了才知道，我一年在订阅上花了这么多……你也测测？"',
+    copyOk:'✅ 已复制！粘贴到聊天窗口发送即可', copyPrompt:'手动复制以下文字：',
+    shareTitle2:'📊 看看我的订阅账单', shareText:'我算了才知道一年在订阅上花了这么多……你也来测测？',
     alertName:'请输入订阅名称', alertAmount:'请输入有效金额',
     periodMonthly:'每月', periodYearly:'每年', periodQuarterly:'每季',
     footer:'数据仅保存在你的浏览器中，不会上传服务器。<br>© 2026 订阅雷达 SubRadar'
@@ -191,10 +191,10 @@ const T = {
     reportTitle:'📊 Your Subscription Report',
     rlCount:'Active Subscriptions', rlMonthly:'Monthly Spend', rlYearly:'Yearly Spend', rlFive:'5-Year Total',
     wasteText:'Est. ¥{m}/mo (≈ ¥{y}/yr) may be for subscriptions you no longer use. Consider canceling them.',
-    shareTitle:'📤 Share Your Report', shareCopy:'📋 Copy Text', shareWx:'💬 Share on WeChat',
+    shareTitle:'📤 Share Your Report', shareCopy:'📋 Copy Text', shareWx:'💬 Share',
     copyReport:'📊 My Subscription Report\n━━━━━━━━━━\n📋 Active: {n}\n💳 Monthly: ¥{m}\n📅 Yearly: ¥{y}\n⚠️ Potential Waste: ¥{w}/yr\n━━━━━━━━━━\n🔍 Try it: https://radar-t.pages.dev\n#SubRadar #SubscriptionManagement',
-    copyOk:'✅ Copied! Share with your friends.', copyPrompt:'Copy manually:',
-    wxAlert:'📱 Screenshot this page and share it on WeChat.\n\nSuggested caption: "I calculated my yearly subscriptions... try it yourself?"',
+    copyOk:'✅ Copied! Paste it into any chat.', copyPrompt:'Copy manually:',
+    shareTitle2:'📊 Check out my subscription breakdown', shareText:'I calculated my yearly subscriptions — the number surprised me. Try it yourself?',
     alertName:'Please enter a subscription name', alertAmount:'Please enter a valid amount',
     periodMonthly:'Monthly', periodYearly:'Yearly', periodQuarterly:'Quarterly',
     footer:'Your data stays on your device. Nothing is uploaded.<br>© 2026 SubRadar'
@@ -336,10 +336,36 @@ function renderResults() {
 function copyReport() {
   const { totalMonthly, wasteMonthly } = calculateWaste();
   const text = t('copyReport').replace('{n}',subscriptions.length).replace('{m}',totalMonthly.toFixed(0)).replace('{y}',(totalMonthly*12).toFixed(0)).replace('{w}',(wasteMonthly*12).toFixed(0));
-  navigator.clipboard.writeText(text).then(() => alert(t('copyOk'))).catch(() => prompt(t('copyPrompt'), text));
+  navigator.clipboard.writeText(text).then(() => {
+    // Non-intrusive feedback
+    const btn = document.getElementById('shareCopy');
+    const orig = btn.textContent;
+    btn.textContent = '✅ 已复制';
+    btn.style.background = '#34C759'; btn.style.color = 'white';
+    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.style.color = ''; }, 2000);
+  }).catch(() => prompt(t('copyPrompt'), text));
 }
 
-function shareWechat() { alert(t('wxAlert')); }
+async function shareWechat() {
+  const { totalMonthly, wasteMonthly } = calculateWaste();
+  const text = t('shareText') + '\n\n' + t('copyReport').replace('{n}',subscriptions.length).replace('{m}',totalMonthly.toFixed(0)).replace('{y}',(totalMonthly*12).toFixed(0)).replace('{w}',(wasteMonthly*12).toFixed(0));
+
+  // Try native share (works on mobile: WeChat, Moments, etc.)
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: t('shareTitle2'), text: text, url: 'https://radar-t.pages.dev/' });
+      return;
+    } catch (e) { /* user cancelled, fall through to copy */ }
+  }
+
+  // Fallback: copy to clipboard and let them paste
+  try {
+    await navigator.clipboard.writeText(text);
+    alert(t('copyOk'));
+  } catch (e) {
+    prompt(t('copyPrompt'), text);
+  }
+}
 
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
