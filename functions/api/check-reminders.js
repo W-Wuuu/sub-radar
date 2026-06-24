@@ -1,130 +1,130 @@
 /**
  * GET /api/check-reminders
- * 扫描 KV 中所有未通知的提醒。到期>3天时提前3天提醒，≤3天时当天提醒。
- *
- * 触发方式（按优先级）：
- * 1. Cloudflare Workers Cron Trigger（推荐，需单独配置）
- * 2. 外部免费 cron 服务（如 cron-job.org）每天 GET 一次
- * 3. 客户端打开页面时轮询调用
- *
- * 需要绑定 KV namespace: REMINDERS_KV
+ * Scans KV for unnotified reminders. Sends emails for those due within window.
+ * Add ?bypass_quota=1 to skip any quota limits.
  */
-
-// Cloudflare Workers 运行在 UTC 时区，需要转为北京时间 (UTC+8)
 function beijingToday() {
-  const now = new Date();
-  // 转为北京时间：UTC + 8小时
-  const bj = new Date(now.getTime() + 8 * 3600000);
+  var now = new Date();
+  var bj = new Date(now.getTime() + 8 * 3600000);
   bj.setHours(0, 0, 0, 0);
   return bj;
 }
 
-// 将 "YYYY-MM-DD" 格式的北京时间字符串转为 Date 对象
 function parseBeijingDate(dateStr) {
-  const d = new Date(dateStr + 'T00:00:00+08:00');
-  return d;
+  return new Date(dateStr + 'T00:00:00+08:00');
 }
 
 export async function onRequest(context) {
-  const { request, env } = context;
+  var request = context.request;
+  var env = context.env;
+  var url = new URL(request.url);
 
   if (request.method === 'OPTIONS') {
-    return new Response(null, { headers: {
-      'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type'
-    }});
+    return new Response(null, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      }
+    });
   }
 
   try {
     if (!env.REMINDERS_KV) {
-      return new Response(JSON.stringify({ status: 'no_kv', message: 'KV namespace not configured. Set up REMINDERS_KV binding.' }), { status: 200,
+      return new Response(JSON.stringify({ status: 'no_kv' }), { status: 200,
         headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
     }
-
     if (!env.RESEND_API_KEY) {
-      return new Response(JSON.stringify({ status: 'no_resend', message: 'RESEND_API_KEY not configured.' }), { status: 200,
+      return new Response(JSON.stringify({ status: 'no_resend' }), { status: 200,
         headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
     }
 
-    const index = JSON.parse(await env.REMINDERS_KV.get('__index__') || '[]');
-    const today = beijingToday();
-    const bypassQuota = url.searchParams.get('bypass_quota') === '1';
-    let sent = 0, skipped = 0;
-    const diag = []; // per-entry diagnostics
+    var index = JSON.parse(await env.REMINDERS_KV.get('__index__') || '[]');
+    var today = beijingToday();
+    var bypassQuota = url.searchParams.get('bypass_quota') === '1';
+    var sent = 0;
+    var skipped = 0;
+    var diag = [];
 
-    for (const entry of index) {
-      if (entry.notified) { diag.push({ id: entry.id, expireDate: entry.expireDate, reason: 'already_notified_in_index' }); skipped++; continue; }
+    for (var i = 0; i < index.length; i++) {
+      var entry = index[i];
 
-      // entry.expireDate is a Beijing-time date string like "2026-06-25"
-      const expireDate = parseBeijingDate(entry.expireDate);
-      const notifyStart = new Date(expireDate);
+      if (entry.notified) {
+        diag.push({ id: entry.id, expireDate: entry.expireDate, reason: 'already_notified_in_index' });
+        skipped++;
+        continue;
+      }
+
+      var expireDate = parseBeijingDate(entry.expireDate);
+      var notifyStart = new Date(expireDate);
       notifyStart.setDate(notifyStart.getDate() - 3);
 
       if (!(today >= notifyStart && today <= expireDate)) {
-        diag.push({ id: entry.id, expireDate: entry.expireDate, reason: 'not_in_window', today: today.toISOString(), notifyStart: notifyStart.toISOString(), expireDateUtc: expireDate.toISOString() });
-        skipped++; continue;
+        diag.push({
+          id: entry.id, expireDate: entry.expireDate, reason: 'not_in_window',
+          today: today.toISOString(), notifyStart: notifyStart.toISOString()
+        });
+        skipped++;
+        continue;
       }
 
-      const record = JSON.parse(await env.REMINDERS_KV.get(entry.id));
-      if (!record) { diag.push({ id: entry.id, expireDate: entry.expireDate, reason: 'record_not_found_in_kv' }); skipped++; continue; }
-      if (record.notified) { diag.push({ id: entry.id, expireDate: entry.expireDate, reason: 'record_already_notified' }); skipped++; continue; }
+      var record = JSON.parse(await env.REMINDERS_KV.get(entry.id));
+      if (!record) {
+        diag.push({ id: entry.id, expireDate: entry.expireDate, reason: 'record_not_found_in_kv' });
+        skipped++;
+        continue;
+      }
+      if (record.notified) {
+        diag.push({ id: entry.id, expireDate: entry.expireDate, reason: 'record_already_notified' });
+        skipped++;
+        continue;
+      }
 
-      const daysLeft = Math.ceil((expireDate - today) / 86400000);
-      const urgencyText = daysLeft <= 0 ? '今天到期！' : daysLeft === 1 ? '明天到期！' : `${daysLeft}天后到期`;
+      var daysLeft = Math.ceil((expireDate - today) / 86400000);
+      var urgencyText = daysLeft <= 0 ? '今天到期！' : daysLeft === 1 ? '明天到期！' : daysLeft + '天后到期';
 
-        try {
-          const resendResp = await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${env.RESEND_API_KEY}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              from: '订阅雷达 <reminder@subradar.dev>',
-              to: record.email,
-              subject: `⏰ ${record.subName} ${urgencyText} — 订阅雷达提醒`,
-              html: `<div style="font-family:-apple-system,sans-serif;max-width:480px;margin:0 auto;">
-                <h2>📅 续费提醒</h2>
-                <p>你的订阅 <strong>${record.subName}</strong> 将于 <strong>${record.expireDate}</strong> 到期。</p>
-                <p style="font-size:20px;font-weight:700;color:#007AFF;">${urgencyText}</p>
-                <hr>
-                <p style="color:#666;">如果不再需要，建议立即取消自动续费。</p>
-                <p style="color:#666;">取消教程：<a href="https://radar-t.pages.dev/">radar-t.pages.dev</a> → 查教程</p>
-                <hr>
-                <p style="font-size:12px;color:#999;">此邮件由订阅雷达自动发送。</p>
-              </div>`,
-            }),
-          });
+      try {
+        var resendResp = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + env.RESEND_API_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            from: 'SubRadar <reminder@subradar.dev>',
+            to: record.email,
+            subject: record.subName + ' ' + urgencyText + ' — SubRadar',
+            html: '<div style="font-family:sans-serif;max-width:480px;margin:0 auto;"><h2>Subscription Reminder</h2><p><strong>' + record.subName + '</strong> expires on <strong>' + record.expireDate + '</strong>.</p><p style="font-size:20px;color:#007AFF;">' + urgencyText + '</p><hr><p style="color:#666;">Cancel guide: <a href="https://radar-t.pages.dev/">radar-t.pages.dev</a></p></div>'
+          })
+        });
 
-          if (resendResp.ok) {
-            record.notified = true;
-            entry.notified = true;
-            await env.REMINDERS_KV.put(entry.id, JSON.stringify(record));
-            sent++;
-            console.log(`✅ 提醒已发送: ${record.email} — ${record.subName}`);
-          } else {
-            console.error(`❌ 发送失败: ${record.email}`, await resendResp.text());
-          }
-        } catch (e) {
-          console.error(`❌ 发送异常: ${record.email}`, e);
+        if (resendResp.ok) {
+          record.notified = true;
+          entry.notified = true;
+          await env.REMINDERS_KV.put(entry.id, JSON.stringify(record));
+          sent++;
+        } else {
+          var errText = await resendResp.text();
+          diag.push({ id: entry.id, reason: 'resend_api_error', error: errText.substring(0, 200) });
         }
+      } catch (e) {
+        diag.push({ id: entry.id, reason: 'send_exception', error: e.message });
       }
     }
 
-    // Update index
     await env.REMINDERS_KV.put('__index__', JSON.stringify(index));
 
     return new Response(JSON.stringify({
-      status: 'ok', sent, skipped, total: index.length,
-      bypassQuota,
+      status: 'ok', sent: sent, skipped: skipped, total: index.length,
+      bypassQuota: bypassQuota,
       checkedAt: new Date().toISOString(),
       beijingTime: new Date(new Date().getTime() + 8 * 3600000).toISOString(),
-      diagnostics: diag.slice(0, 20) // first 20 entries for debugging
+      diagnostics: diag.slice(0, 30)
     }), { status: 200,
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
 
   } catch (err) {
-    console.error('check-reminders error:', err);
-    return new Response(JSON.stringify({ error: 'Internal error' }), { status: 500,
+    return new Response(JSON.stringify({ error: 'Internal error: ' + err.message }), { status: 500,
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
   }
 }
