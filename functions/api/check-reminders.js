@@ -42,6 +42,7 @@ export async function onRequest(context) {
     var index = JSON.parse(await env.REMINDERS_KV.get('__index__') || '[]');
     var today = beijingToday();
     var bypassQuota = url.searchParams.get('bypass_quota') === '1';
+    var forceSend = url.searchParams.get('force_send') === '1';
     var sent = 0;
     var skipped = 0;
     var diag = [];
@@ -59,7 +60,7 @@ export async function onRequest(context) {
       var notifyStart = new Date(expireDate);
       notifyStart.setDate(notifyStart.getDate() - 3);
 
-      if (!(today >= notifyStart && today <= expireDate)) {
+      if (!forceSend && !(today >= notifyStart && today <= expireDate)) {
         diag.push({
           id: entry.id, expireDate: entry.expireDate, reason: 'not_in_window',
           today: today.toISOString(), notifyStart: notifyStart.toISOString()
