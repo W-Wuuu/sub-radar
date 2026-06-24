@@ -47,7 +47,7 @@ export async function onRequest(context) {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + env.RESEND_API_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: 'SubRadar <reminder@subradar.dev>',
+        from: 'SubRadar <onboarding@resend.dev>',
         to: email,
         subject: subName + ' — SubRadar Reminder',
         html: '<div style="font-family:sans-serif;max-width:480px;margin:0 auto;"><h2>Subscription Reminder</h2><p><strong>' + subName + '</strong> expires on <strong>' + expireDate + '</strong>.</p><p>Check if you need to cancel auto-renewal.</p><hr><p style="color:#666;">Cancel guide: <a href="https://radar-t.pages.dev/">radar-t.pages.dev</a></p></div>'

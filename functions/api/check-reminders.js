@@ -91,7 +91,7 @@ export async function onRequest(context) {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            from: 'SubRadar <reminder@subradar.dev>',
+            from: 'SubRadar <onboarding@resend.dev>',
             to: record.email,
             subject: record.subName + ' ' + urgencyText + ' — SubRadar',
             html: '<div style="font-family:sans-serif;max-width:480px;margin:0 auto;"><h2>Subscription Reminder</h2><p><strong>' + record.subName + '</strong> expires on <strong>' + record.expireDate + '</strong>.</p><p style="font-size:20px;color:#007AFF;">' + urgencyText + '</p><hr><p style="color:#666;">Cancel guide: <a href="https://radar-t.pages.dev/">radar-t.pages.dev</a></p></div>'
