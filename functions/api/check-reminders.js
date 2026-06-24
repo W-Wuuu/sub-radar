@@ -47,24 +47,29 @@ export async function onRequest(context) {
 
     const index = JSON.parse(await env.REMINDERS_KV.get('__index__') || '[]');
     const today = beijingToday();
+    const bypassQuota = url.searchParams.get('bypass_quota') === '1';
     let sent = 0, skipped = 0;
+    const diag = []; // per-entry diagnostics
 
     for (const entry of index) {
-      if (entry.notified) { skipped++; continue; }
+      if (entry.notified) { diag.push({ id: entry.id, expireDate: entry.expireDate, reason: 'already_notified_in_index' }); skipped++; continue; }
 
       // entry.expireDate is a Beijing-time date string like "2026-06-25"
       const expireDate = parseBeijingDate(entry.expireDate);
-
-      // Notify 3 days before expiry. If already within 3 days, notify today.
       const notifyStart = new Date(expireDate);
       notifyStart.setDate(notifyStart.getDate() - 3);
 
-      if (today >= notifyStart && today <= expireDate) {
-        const record = JSON.parse(await env.REMINDERS_KV.get(entry.id));
-        if (!record || record.notified) { skipped++; continue; }
+      if (!(today >= notifyStart && today <= expireDate)) {
+        diag.push({ id: entry.id, expireDate: entry.expireDate, reason: 'not_in_window', today: today.toISOString(), notifyStart: notifyStart.toISOString(), expireDateUtc: expireDate.toISOString() });
+        skipped++; continue;
+      }
 
-        const daysLeft = Math.ceil((expireDate - today) / 86400000);
-        const urgencyText = daysLeft <= 0 ? '今天到期！' : daysLeft === 1 ? '明天到期！' : `${daysLeft}天后到期`;
+      const record = JSON.parse(await env.REMINDERS_KV.get(entry.id));
+      if (!record) { diag.push({ id: entry.id, expireDate: entry.expireDate, reason: 'record_not_found_in_kv' }); skipped++; continue; }
+      if (record.notified) { diag.push({ id: entry.id, expireDate: entry.expireDate, reason: 'record_already_notified' }); skipped++; continue; }
+
+      const daysLeft = Math.ceil((expireDate - today) / 86400000);
+      const urgencyText = daysLeft <= 0 ? '今天到期！' : daysLeft === 1 ? '明天到期！' : `${daysLeft}天后到期`;
 
         try {
           const resendResp = await fetch('https://api.resend.com/emails', {
@@ -110,8 +115,10 @@ export async function onRequest(context) {
 
     return new Response(JSON.stringify({
       status: 'ok', sent, skipped, total: index.length,
+      bypassQuota,
       checkedAt: new Date().toISOString(),
-      beijingTime: new Date(new Date().getTime() + 8 * 3600000).toISOString()
+      beijingTime: new Date(new Date().getTime() + 8 * 3600000).toISOString(),
+      diagnostics: diag.slice(0, 20) // first 20 entries for debugging
     }), { status: 200,
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
 
