@@ -1,6 +1,6 @@
 /**
  * GET /api/check-reminders
- * 扫描 KV 中所有未通知的提醒，对到期前 ≤3 天的发送邮件。
+ * 扫描 KV 中所有未通知的提醒。到期>3天时提前3天提醒，≤3天时当天提醒。
  *
  * 触发方式（按优先级）：
  * 1. Cloudflare Workers Cron Trigger（推荐，需单独配置）
@@ -36,9 +36,6 @@ export async function onRequest(context) {
     const index = JSON.parse(await env.REMINDERS_KV.get('__index__') || '[]');
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const threeDaysFromNow = new Date(today);
-    threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
-
     let sent = 0, skipped = 0;
 
     for (const entry of index) {
@@ -47,8 +44,10 @@ export async function onRequest(context) {
       const expireDate = new Date(entry.expireDate);
       expireDate.setHours(0, 0, 0, 0);
 
-      // Check if expireDate is within 3 days AND not already past
-      if (expireDate <= threeDaysFromNow && expireDate >= today) {
+      // Notify 3 days before expiry. If already within 3 days, notify today.
+      const notifyStart = new Date(expireDate);
+      notifyStart.setDate(notifyStart.getDate() - 3);
+      if (today >= notifyStart && today <= expireDate) {
         const record = JSON.parse(await env.REMINDERS_KV.get(entry.id));
         if (!record || record.notified) { skipped++; continue; }
 

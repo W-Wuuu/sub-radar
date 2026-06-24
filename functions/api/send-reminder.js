@@ -1,7 +1,7 @@
 /**
  * Cloudflare Pages Function — 到期提醒邮件发送
  *
- * 触发：用户订阅到期前3天自动发送
+ * 触发：用户订阅到期当天发送
  * 限额：免费用户3次/月
  * 邮件服务：Resend (https://resend.com) — 免费层100封/天
  *
@@ -72,7 +72,7 @@ export async function onRequest(context) {
         success: true,
         mode: 'simulated',
         message: `提醒邮件已模拟发送至 ${email}`,
-        detail: `${subName} 将于 ${expireDate} 到期，到期前3天将收到提醒。`
+        detail: `${subName} 将于 ${expireDate} 到期，到期当天将收到提醒。`
       }), {
         status: 200,
         headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
@@ -80,9 +80,8 @@ export async function onRequest(context) {
     }
 
     // 真实发送（Resend API）
-    const threeDaysBefore = new Date(expireDate);
-    threeDaysBefore.setDate(threeDaysBefore.getDate() - 3);
-    const reminderDate = threeDaysBefore.toLocaleDateString('zh-CN');
+    const expireDateObj = new Date(expireDate);
+    const reminderDate = expireDateObj.toLocaleDateString('zh-CN');
 
     const resendResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -93,12 +92,12 @@ export async function onRequest(context) {
       body: JSON.stringify({
         from: '订阅雷达 <reminder@subradar.dev>',
         to: email,
-        subject: `⏰ ${subName} 将于3天后到期 — 订阅雷达提醒`,
+        subject: `⏰ ${subName} — 订阅雷达提醒`,
         html: `
           <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
             <h2>📅 续费提醒</h2>
             <p>你的订阅 <strong>${subName}</strong> 将于 <strong>${expireDate}</strong> 到期。</p>
-            <p>距离到期还有 <strong>3天</strong>。</p>
+            <p>请检查是否需要取消自动续费，避免不必要的扣款。</p>
             <hr>
             <p style="color: #666;">如果不再需要，建议立即取消自动续费。</p>
             <p style="color: #666;">取消教程：<a href="https://radar-t.pages.dev/">radar-t.pages.dev</a> → 查教程</p>

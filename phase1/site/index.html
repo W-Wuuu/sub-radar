@@ -229,7 +229,7 @@ const I18N = {
     dl1:'查教程',dl2:'算账单',dl3:'管到期',
     s1title:'查取消教程',s1sub:'输入平台名称，查看详细的取消订阅步骤。已收录 15 个平台。',
     s2title:'算订阅账单',s2sub:'输入你的订阅，自动计算月度/年度/5年总支出。加总数字会让你做出更理性的决定。',
-    s3title:'管到期提醒',s3sub:'设置到期提醒，系统在到期前3天自动发送邮件。免费额度：每月3次。',
+    s3title:'管到期提醒',s3sub:'到期>3天提前3天提醒，≤3天当天提醒。免费额度：每月3次。',
     searchPlaceholder:'输入平台名称…',searchBtn:'查询',
     quotaLabel:'本月剩余',
     remindNamePlaceholder:'订阅名称',
@@ -239,7 +239,7 @@ const I18N = {
     noResult:'未找到「{q}」的取消教程。试试搜索其他平台名称。',
     stepsLabel:'取消步骤',
     emptyReminders:'还没有设置提醒',
-    emptyRemindersSub:'添加你的订阅到期日，到期前我们会在3天前发邮件提醒你。',
+    emptyRemindersSub:'添加到期日，>3天提前3天提醒，≤3天当天提醒。',
     footer:'数据仅保存在你的浏览器中',
     cnLabel:'国内',intlLabel:'国际'
   },
@@ -252,7 +252,7 @@ const I18N = {
     dl1:'Cancel',dl2:'Calculate',dl3:'Manage',
     s1title:'Cancel Subscription Guides',s1sub:'Search for a platform and get step-by-step cancellation instructions. 15 platforms supported.',
     s2title:'Subscription Calculator',s2sub:'Add your subscriptions to see monthly, yearly, and 5-year totals. Seeing the full number changes everything.',
-    s3title:'Renewal Alerts',s3sub:'Set a reminder and we\'ll email you 3 days before renewal. Free tier: 3 alerts per month.',
+    s3title:'Renewal Alerts',s3sub:'>3 days out: reminded 3 days before. ≤3 days: reminded on the day. Free tier: 3/month.',
     searchPlaceholder:'Search a platform…',searchBtn:'Search',
     quotaLabel:'Remaining this month',
     remindNamePlaceholder:'Subscription name',
@@ -262,7 +262,7 @@ const I18N = {
     noResult:'No cancellation guide found for "{q}". Try another platform name.',
     stepsLabel:'Steps',
     emptyReminders:'No reminders set',
-    emptyRemindersSub:'Add a subscription with its expiry date, and we\'ll email you 3 days before it renews.',
+    emptyRemindersSub:'Add expiry date. >3d: reminded 3 days before. ≤3d: reminded on the day.',
     footer:'Your data stays on your device',
     cnLabel:'CN',intlLabel:'Global'
   }
@@ -453,8 +453,13 @@ function addReminder() {
   const exp = new Date(date);
   const daysUntilExpiry = Math.ceil((exp - now) / 86400000);
 
-  // If expiry is within 3 days, send email NOW (not later)
-  const sendNow = daysUntilExpiry <= 3;
+  // Notify window: 3 days before expiry. If we're already inside it, send today.
+  const notifyStart = new Date(date);
+  notifyStart.setDate(notifyStart.getDate() - 3);
+  notifyStart.setHours(0, 0, 0, 0);
+  const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
+  const inWindow = todayStart >= notifyStart;
+  const sendNow = inWindow;
 
   list.push({ id: Date.now(), name, expireDate: date, email, createdAt: now.toISOString(), notified: sendNow });
   saveReminders(list);
@@ -470,7 +475,7 @@ function addReminder() {
     body: JSON.stringify({ email, subName: name, expireDate: date })
   }).catch(() => {});
 
-  // If expiry is within 3 days, send the email immediately via Resend
+  // If already within notify window, send immediately
   if (sendNow) {
     const urgency = daysUntilExpiry <= 0
       ? (lang === 'zh' ? '今天到期！' : 'Due today!')
@@ -538,10 +543,15 @@ async function checkAndSendReminders() {
     if (r.notified) continue;
     const exp = new Date(r.expireDate);
     exp.setHours(0, 0, 0, 0);
-    const daysUntil = Math.ceil((exp - today) / 86400000);
+    const notifyStart = new Date(exp);
+	    notifyStart.setDate(notifyStart.getDate() - 3);
+	    const inWindow = today >= notifyStart && today <= exp;
 
-    // Send if ≤3 days before expiry (and not already past too long)
-    if (daysUntil <= 3 && daysUntil >= -1) {
+	    if (inWindow) {
+	      const daysUntil = Math.ceil((exp - today) / 86400000);
+
+    
+          // inWindow already checked above
       const urgency = daysUntil <= 0
         ? (lang === 'zh' ? '今天到期！' : 'Due today!')
         : (lang === 'zh' ? `${daysUntil}天后到期` : `Due in ${daysUntil} days`);
